@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="460" viewBox="0 0 800 460" fill="none">
+  <style>
+    .bg { fill: #0d1117; }
+    .bar { fill: #161b22; }
+    .border { stroke: #1a1f2b; stroke-width: 1; fill: none; }
+    .dot-r { fill: #ff5f57; }
+    .dot-y { fill: #febc2e; }
+    .dot-g { fill: #28c840; }
+    .title { fill: #4b5563; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
+    .prompt { fill: #7dd3fc; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    .cmd { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    .heading { fill: #fbbf24; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; font-weight: 700; }
+    .text { fill: #c5cdd9; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    .dim { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    .cursor { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    .back { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; }
+    .back:hover { fill: #60a5fa; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .blink { animation: blink 1.2s step-end infinite; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="800" height="460" rx="12" />
+  <rect class="border" x="0.5" y="0.5" width="799" height="459" rx="12" />
+  <rect class="bar" x="1" y="1" width="798" height="40" rx="12" />
+  <rect class="bg" x="1" y="30" width="798" height="12" />
+  <line x1="1" y1="41" x2="799" y2="41" stroke="#1a1f2b" stroke-width="1" />
+  <circle class="dot-r" cx="24" cy="21" r="6" />
+  <circle class="dot-y" cx="44" cy="21" r="6" />
+  <circle class="dot-g" cx="64" cy="21" r="6" />
+  <text class="title" x="400" y="25" text-anchor="middle">jaider@github &#8212; zsh</text>
+
+  <g transform="translate(24, 62)">
+    <text class="prompt" y="0">jaider@github:~$</text>
+    <text class="cmd" x="152" y="0">skills</text>
+
+    <text class="heading" y="30">Languages</text>
+    <text class="text" y="50" xml:space="preserve">  TypeScript    &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;  advanced</text>
+    <text class="text" y="68" xml:space="preserve">  JavaScript    &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;  advanced</text>
+    <text class="text" y="86" xml:space="preserve">  HTML/CSS      &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;  advanced</text>
+    <text class="text" y="104" xml:space="preserve">  Python        &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;  familiar</text>
+    <text class="text" y="122" xml:space="preserve">  Go            &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;&#9617;  learning</text>
+
+    <text class="heading" y="156">Frameworks &amp; Libraries</text>
+    <text class="text" y="176" xml:space="preserve">  React  &#183;  Next.js  &#183;  SvelteKit</text>
+    <text class="text" y="194" xml:space="preserve">  Tailwind CSS  &#183;  Fastify  &#183;  Supabase</text>
+
+    <text class="heading" y="228">Tooling &amp; Platforms</text>
+    <text class="text" y="248" xml:space="preserve">  Git &amp; GitHub  &#183;  VS Code  &#183;  OpenAPI</text>
+    <text class="text" y="266" xml:space="preserve">  pnpm / Turborepo  &#183;  n8n  &#183;  Canvas API</text>
+
+    <text class="prompt" y="306">jaider@github:~$</text>
+    <text class="cursor blink" x="152" y="306">&#9608;</text>
+  </g>
+
+  <a xlink:href="../README.md">
+    <text class="back" x="24" y="448">&#8592; back</text>
+  </a>
+</svg>
