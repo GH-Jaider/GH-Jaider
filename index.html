@@ -580,7 +580,7 @@ whoami: () => [
   contact: () => [
     { type: 'heading', text: "Let's connect" },
     { text: '' },
-    { text: '  Email       correodejaider@gmail.com' },
+    { type: 'link', text: '  Email       correodejaider@gmail.com' },
     { type: 'link', text: '  LinkedIn    https://linkedin.com/in/jaider-vd' },
     { type: 'link', text: '  GitHub      https://github.com/GH-Jaider' },
   ],
@@ -592,8 +592,8 @@ whoami: () => [
     { text: '  Editor            VS Code' },
     { text: '  Terminal          WARP' },
     { text: '  AI Assistants     OpenCode, GitHub Copilot' },
-    { text: '  Workflow          SDDD, TDD, CI/CD, docs' },
-    { text: '  Containerization   Docker' },
+    { text: '  Workflow          SDD, TDD, CI/CD, docs' },
+    { text: '  Containerization  Docker' },
     { text: '  Package Mgmt      pnpm, bun, devenv (learning)' },
     { text: '  Automation        n8n' },
     { text: '  API Design        OpenAPI, Fastify' },
@@ -791,15 +791,21 @@ async function typeLines(lines, cmd) {
       }
     }
 
-    // Make URLs clickable after typing completes
+    // Make URLs and emails clickable after typing completes
     if (line.type === 'link') {
       const raw = el.textContent;
       const urlMatch = raw.match(/(https?:\/\/[^\s]+)/);
+      const emailMatch = raw.match(/([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/);
       if (urlMatch) {
         const url = urlMatch[1];
         const before = raw.slice(0, urlMatch.index);
         const after = raw.slice(urlMatch.index + url.length);
         el.innerHTML = escapeHtml(before) + `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>` + escapeHtml(after);
+      } else if (emailMatch) {
+        const email = emailMatch[1];
+        const before = raw.slice(0, emailMatch.index);
+        const after = raw.slice(emailMatch.index + email.length);
+        el.innerHTML = escapeHtml(before) + `<a href="mailto:${escapeHtml(email)}" rel="noopener">${escapeHtml(email)}</a>` + escapeHtml(after);
       }
     }
 
