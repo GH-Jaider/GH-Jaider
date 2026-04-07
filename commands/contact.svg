@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="460" viewBox="0 0 800 460" fill="none">
   <style>
     .bg { fill: #0d1117; }
     .bar { fill: #161b22; }
@@ -18,8 +18,8 @@
   </style>
 
   <!-- Window -->
-  <rect class="bg" x="0" y="0" width="800" height="220" rx="12" />
-  <rect class="border" x="0.5" y="0.5" width="799" height="219" rx="12" />
+  <rect class="bg" x="0" y="0" width="800" height="460" rx="12" />
+  <rect class="border" x="0.5" y="0.5" width="799" height="459" rx="12" />
 
   <!-- Title bar -->
   <rect class="bar" x="1" y="1" width="798" height="40" rx="12" />
@@ -42,7 +42,7 @@
     <text class="link" y="100" xml:space="preserve">  GitHub      https://github.com/GH-Jaider</text>
 
     <!-- Trailing prompt -->
-    <text class="prompt" y="136">jaider@github:~$</text>
-    <text class="cursor blink" x="152" y="136">&#9608;</text>
+    <text class="prompt" y="378">jaider@github:~$</text>
+    <text class="cursor blink" x="152" y="378">&#9608;</text>
   </g>
 </svg>
