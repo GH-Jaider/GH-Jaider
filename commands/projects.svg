@@ -1,62 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="460" viewBox="0 0 800 460" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="340" viewBox="0 0 800 340" fill="none">
   <style>
     .bg { fill: #0d1117; }
-    .bar { fill: #161b22; }
-    .border { stroke: #1a1f2b; stroke-width: 1; fill: none; }
-    .dot-r { fill: #ff5f57; }
-    .dot-y { fill: #febc2e; }
-    .dot-g { fill: #28c840; }
-    .title { fill: #4b5563; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
-    .prompt { fill: #7dd3fc; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cmd { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
     .heading { fill: #fbbf24; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; font-weight: 700; }
     .text { fill: #c5cdd9; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
     .dim { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
     .link { fill: #60a5fa; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cursor { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .back { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; }
-    .back:hover { fill: #60a5fa; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .blink { animation: blink 1.2s step-end infinite; }
   </style>
 
-  <rect class="bg" x="0" y="0" width="800" height="460" rx="12" />
-  <rect class="border" x="0.5" y="0.5" width="799" height="459" rx="12" />
-  <rect class="bar" x="1" y="1" width="798" height="40" rx="12" />
-  <rect class="bg" x="1" y="30" width="798" height="12" />
-  <line x1="1" y1="41" x2="799" y2="41" stroke="#1a1f2b" stroke-width="1" />
-  <circle class="dot-r" cx="24" cy="21" r="6" />
-  <circle class="dot-y" cx="44" cy="21" r="6" />
-  <circle class="dot-g" cx="64" cy="21" r="6" />
-  <text class="title" x="400" y="25" text-anchor="middle">jaider@github &#8212; zsh</text>
+  <rect class="bg" x="0" y="0" width="800" height="340" rx="8" />
 
-  <g transform="translate(24, 62)">
-    <text class="prompt" y="0">jaider@github:~$</text>
-    <text class="cmd" x="152" y="0">projects</text>
+  <g transform="translate(24, 24)">
+    <text class="heading" y="0">not-the-louvre</text>
+    <text class="dim" y="18">SvelteKit &#183; Supabase &#183; Canvas API &#183; Threlte</text>
+    <text class="text" y="38" xml:space="preserve">  Social drawing game built for a hackathon.</text>
+    <text class="text" y="56" xml:space="preserve">  Real-time drawing, publishing, forking &amp; voting.</text>
+    <text class="link" y="74" xml:space="preserve">  &#8594; https://github.com/Oktuvida/not-the-louvre</text>
 
-    <text class="heading" y="30">not-the-louvre</text>
-    <text class="dim" y="48">SvelteKit &#183; Supabase &#183; Canvas API &#183; Threlte</text>
-    <text class="text" y="68" xml:space="preserve">  Social drawing game built for a hackathon.</text>
-    <text class="text" y="86" xml:space="preserve">  Real-time drawing, publishing, forking &amp; voting.</text>
-    <text class="link" y="104" xml:space="preserve">  &#8594; https://github.com/Oktuvida/not-the-louvre</text>
+    <text class="heading" y="108">splitify</text>
+    <text class="dim" y="126">TypeScript &#183; VS Code &#183; Git &#183; GitHub</text>
+    <text class="text" y="146" xml:space="preserve">  AI-powered commit grouping for VS Code.</text>
+    <text class="text" y="164" xml:space="preserve">  Turn messy changes into clean, atomic commits.</text>
+    <text class="link" y="182" xml:space="preserve">  &#8594; https://github.com/GH-Jaider/splitify</text>
 
-    <text class="heading" y="138">splitify</text>
-    <text class="dim" y="156">TypeScript &#183; VS Code &#183; Git &#183; GitHub</text>
-    <text class="text" y="176" xml:space="preserve">  AI-powered commit grouping for VS Code.</text>
-    <text class="text" y="194" xml:space="preserve">  Turn messy changes into clean, atomic commits.</text>
-    <text class="link" y="212" xml:space="preserve">  &#8594; https://github.com/GH-Jaider/splitify</text>
-
-    <text class="heading" y="246">VS-Karel</text>
-    <text class="dim" y="264">TypeScript &#183; VS Code &#183; Canvas</text>
-    <text class="text" y="284" xml:space="preserve">  Interactive visualizer for Karel the Robot.</text>
-    <text class="text" y="302" xml:space="preserve">  Step-by-step execution &amp; real-time diagnostics.</text>
-    <text class="link" y="320" xml:space="preserve">  &#8594; https://github.com/GH-Jaider/VS-Karel</text>
-
-    <text class="prompt" y="358">jaider@github:~$</text>
-    <text class="cursor blink" x="152" y="358">&#9608;</text>
+    <text class="heading" y="216">VS-Karel</text>
+    <text class="dim" y="234">TypeScript &#183; VS Code &#183; Canvas</text>
+    <text class="text" y="254" xml:space="preserve">  Interactive visualizer for Karel the Robot.</text>
+    <text class="text" y="272" xml:space="preserve">  Step-by-step execution &amp; real-time diagnostics.</text>
+    <text class="link" y="290" xml:space="preserve">  &#8594; https://github.com/GH-Jaider/VS-Karel</text>
   </g>
-
-  <a xlink:href="../README.md">
-    <text class="back" x="24" y="448">&#8592; back</text>
-  </a>
 </svg>

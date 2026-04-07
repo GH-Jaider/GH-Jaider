@@ -1,62 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="500" viewBox="0 0 800 500" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" viewBox="0 0 800 360" fill="none">
   <style>
     .bg { fill: #0d1117; }
-    .bar { fill: #161b22; }
-    .border { stroke: #1a1f2b; stroke-width: 1; fill: none; }
-    .dot-r { fill: #ff5f57; }
-    .dot-y { fill: #febc2e; }
-    .dot-g { fill: #28c840; }
-    .title { fill: #4b5563; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
-    .prompt { fill: #7dd3fc; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cmd { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
     .heading { fill: #fbbf24; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; font-weight: 700; }
     .text { fill: #c5cdd9; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
     .dim { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cursor { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .back { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; }
-    .back:hover { fill: #60a5fa; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .blink { animation: blink 1.2s step-end infinite; }
   </style>
 
-  <rect class="bg" x="0" y="0" width="800" height="500" rx="12" />
-  <rect class="border" x="0.5" y="0.5" width="799" height="499" rx="12" />
-  <rect class="bar" x="1" y="1" width="798" height="40" rx="12" />
-  <rect class="bg" x="1" y="30" width="798" height="12" />
-  <line x1="1" y1="41" x2="799" y2="41" stroke="#1a1f2b" stroke-width="1" />
-  <circle class="dot-r" cx="24" cy="21" r="6" />
-  <circle class="dot-y" cx="44" cy="21" r="6" />
-  <circle class="dot-g" cx="64" cy="21" r="6" />
-  <text class="title" x="400" y="25" text-anchor="middle">jaider@github &#8212; zsh</text>
+  <rect class="bg" x="0" y="0" width="800" height="360" rx="8" />
 
-  <g transform="translate(24, 62)">
-    <text class="prompt" y="0">jaider@github:~$</text>
-    <text class="cmd" x="152" y="0">experience</text>
+  <g transform="translate(24, 24)">
+    <text class="heading" y="0">Inalambria Internacional SAS</text>
+    <text class="dim" y="18">Software Engineer &#183; Jan 2025 - Present &#183; Remote, Colombia</text>
+    <text class="text" y="38" xml:space="preserve">  &#9500;&#9472; SMS platform product development (frontend + API + realtime)</text>
+    <text class="text" y="56" xml:space="preserve">  &#9500;&#9472; Interfaces focused on clarity, usability &amp; efficiency</text>
+    <text class="text" y="74" xml:space="preserve">  &#9500;&#9472; Multi-user, high-concurrency features</text>
+    <text class="text" y="92" xml:space="preserve">  &#9492;&#9472; TypeScript monorepo, strict typing, technical docs</text>
 
-    <text class="heading" y="30">Inalambria Internacional SAS</text>
-    <text class="dim" y="48">Software Engineer &#183; Jan 2025 - Present &#183; Remote, Colombia</text>
-    <text class="text" y="68" xml:space="preserve">  &#9500;&#9472; SMS platform product development (frontend + API + realtime)</text>
-    <text class="text" y="86" xml:space="preserve">  &#9500;&#9472; Interfaces focused on clarity, usability &amp; efficiency</text>
-    <text class="text" y="104" xml:space="preserve">  &#9500;&#9472; Multi-user, high-concurrency features</text>
-    <text class="text" y="122" xml:space="preserve">  &#9492;&#9472; TypeScript monorepo, strict typing, technical docs</text>
+    <text class="heading" y="126">Twnel</text>
+    <text class="dim" y="144">Software Developer &#183; Jun 2022 - Jan 2025 &#183; Remote, Colombia</text>
+    <text class="text" y="164" xml:space="preserve">  &#9500;&#9472; Messaging platform (UX + integrations + automation)</text>
+    <text class="text" y="182" xml:space="preserve">  &#9500;&#9472; Built core UI/UX for SMS platform</text>
+    <text class="text" y="200" xml:space="preserve">  &#9500;&#9472; AI: translations, transcriptions, suggestions, bots</text>
+    <text class="text" y="218" xml:space="preserve">  &#9492;&#9472; Android mobile dev + external integrations</text>
 
-    <text class="heading" y="156">Twnel</text>
-    <text class="dim" y="174">Software Developer &#183; Jun 2022 - Jan 2025 &#183; Remote, Colombia</text>
-    <text class="text" y="194" xml:space="preserve">  &#9500;&#9472; Messaging platform (UX + integrations + automation)</text>
-    <text class="text" y="212" xml:space="preserve">  &#9500;&#9472; Built core UI/UX for SMS platform</text>
-    <text class="text" y="230" xml:space="preserve">  &#9500;&#9472; AI: translations, transcriptions, suggestions, bots</text>
-    <text class="text" y="248" xml:space="preserve">  &#9492;&#9472; Android mobile dev + external integrations</text>
-
-    <text class="heading" y="282">Universidad del Rosario</text>
-    <text class="dim" y="300">Academic Tutor &#183; 2021 - 2025 &#183; Bogota, Colombia</text>
-    <text class="text" y="320" xml:space="preserve">  &#9500;&#9472; 4 years tutoring programming &amp; engineering courses</text>
-    <text class="text" y="338" xml:space="preserve">  &#9492;&#9472; Technical communication &amp; teaching complex concepts</text>
-
-    <text class="prompt" y="378">jaider@github:~$</text>
-    <text class="cursor blink" x="152" y="378">&#9608;</text>
+    <text class="heading" y="252">Universidad del Rosario</text>
+    <text class="dim" y="270">Academic Tutor &#183; 2021 - 2025 &#183; Bogota, Colombia</text>
+    <text class="text" y="290" xml:space="preserve">  &#9500;&#9472; 4 years tutoring programming &amp; engineering courses</text>
+    <text class="text" y="308" xml:space="preserve">  &#9492;&#9472; Technical communication &amp; teaching complex concepts</text>
   </g>
-
-  <a xlink:href="../README.md">
-    <text class="back" x="24" y="488">&#8592; back</text>
-  </a>
 </svg>
