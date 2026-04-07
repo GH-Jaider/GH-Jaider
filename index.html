@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaider Velasco — Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --bg:        #0a0e14;
+    --surface:   #0d1117;
+    --border:    #1a1f2b;
+    --text:      #c5cdd9;
+    --dim:       #4b5563;
+    --prompt:    #7dd3fc;
+    --accent:    #34d399;
+    --warn:      #fbbf24;
+    --error:     #f87171;
+    --link:      #60a5fa;
+    --bar-bg:    #161b22;
+    --bar-dot-r: #ff5f57;
+    --bar-dot-y: #febc2e;
+    --bar-dot-g: #28c840;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(52,211,153,0.06), transparent),
+      var(--bg);
+  }
+
+  .terminal {
+    width: 100%;
+    max-width: 780px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.03),
+      0 24px 80px -12px rgba(0,0,0,0.6);
+  }
+
+  .title-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bar-bg);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+  .title-bar .dots { display: flex; gap: 7px; }
+  .title-bar .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .title-bar .dot.r { background: var(--bar-dot-r); }
+  .title-bar .dot.y { background: var(--bar-dot-y); }
+  .title-bar .dot.g { background: var(--bar-dot-g); }
+  .title-bar .title {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.5px;
+  }
+
+  .terminal-body {
+    height: 520px;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--surface);
+    scroll-behavior: smooth;
+  }
+
+  .terminal-body::-webkit-scrollbar { width: 6px; }
+  .terminal-body::-webkit-scrollbar-track { background: transparent; }
+  .terminal-body::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .line { white-space: pre-wrap; word-break: break-word; }
+  .line.prompt-line {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .line .prompt-prefix {
+    color: var(--prompt);
+    flex-shrink: 0;
+    margin-right: 0;
+  }
+  .line .cmd-text { color: var(--accent); }
+  .line.output { color: var(--text); margin-left: 0; }
+  .line.output.dim { color: var(--dim); }
+  .line.ascii { color: var(--accent); }
+  .line.heading { color: var(--warn); font-weight: 700; }
+  .line.link-line { color: var(--link); }
+  .line.link-line a { color: var(--link); text-decoration: none; }
+  .line.link-line a:hover { text-decoration: underline; }
+  .line.error { color: var(--error); }
+  .line.bar { color: var(--accent); }
+
+  .spacer { height: 12px; }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .input-row .prompt-prefix {
+    color: var(--prompt);
+    flex-shrink: 0;
+  }
+  #input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--accent);
+    font: inherit;
+    caret-color: var(--accent);
+    padding: 0;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 8px; }
+    .terminal-body { height: calc(100vh - 100px); font-size: 12px; }
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<div class="terminal">
+  <div class="title-bar">
+    <div class="dots">
+      <span class="dot r"></span>
+      <span class="dot y"></span>
+      <span class="dot g"></span>
+    </div>
+    <span class="title">jaider@github — zsh</span>
+    <div style="width:36px"></div>
+  </div>
+  <div class="terminal-body" id="terminal">
+    <div class="input-row">
+      <span class="prompt-prefix">jaider@github:~$&nbsp;</span>
+      <input id="input" type="text" autofocus autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+</div>
+
+<script>
+const PROMPT = 'jaider@github:~$ ';
+
+const COMMANDS = {
+  help: () => [
+    { type: 'heading', text: 'Available commands:' },
+    { text: '' },
+    { text: '  whoami       Who am I?' },
+    { text: '  skills       Languages, frameworks & tools' },
+    { text: '  experience   Work history' },
+    { text: '  projects     Selected projects' },
+    { text: '  repos        GitHub repositories' },
+    { text: '  education    Academic background' },
+    { text: '  contact      Get in touch' },
+    { text: '  tools        Dev environment & workflow' },
+    { text: '  languages    Spoken languages' },
+    { text: '  clear        Clear the terminal' },
+    { text: '  help         Show this message' },
+  ],
+
+  whoami: () => [
+    { type: 'ascii', text: '     __      _     __           ' },
+    { type: 'ascii', text: '    / /___ _(_)___/ /__  ____   ' },
+    { type: 'ascii', text: '   / / __ \'/ / __  / _ \\/ __/   ' },
+    { type: 'ascii', text: '  / / /_/ / / /_/ /  __/ /      ' },
+    { type: 'ascii', text: ' /_/\\__,_/_/\\__,_/\\___/_/       ' },
+    { text: '' },
+    { type: 'heading', text: 'Jaider Duvan Velasco Diaz' },
+    { text: 'Web Developer & Software Engineer' },
+    { type: 'dim', text: 'Bogota, Colombia' },
+    { text: '' },
+    { text: 'Building digital products for messaging platforms' },
+    { text: 'and high-traffic environments.' },
+    { text: '' },
+    { text: 'Focused on frontend, UX, and product thinking \u2014' },
+    { text: 'comfortable across APIs, automations, and AI workflows.' },
+  ],
+
+  skills: () => [
+    { type: 'heading', text: 'Languages' },
+    { text: '  TypeScript    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  advanced' },
+    { text: '  JavaScript    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  advanced' },
+    { text: '  HTML/CSS      \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  advanced' },
+    { text: '  Python        \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591  familiar' },
+    { text: '  Go            \u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591  learning' },
+    { text: '' },
+    { type: 'heading', text: 'Frameworks & Libraries' },
+    { text: '  React  \u00b7  Next.js  \u00b7  SvelteKit' },
+    { text: '  Tailwind CSS  \u00b7  Fastify  \u00b7  Supabase' },
+    { text: '' },
+    { type: 'heading', text: 'Tooling & Platforms' },
+    { text: '  Git & GitHub  \u00b7  VS Code  \u00b7  OpenAPI' },
+    { text: '  pnpm / Turborepo  \u00b7  n8n  \u00b7  Canvas API' },
+  ],
+
+  experience: () => [
+    { type: 'heading', text: 'Inalambria Internacional SAS' },
+    { type: 'dim',     text: 'Software Engineer \u00b7 Jan 2025 - Present \u00b7 Remote, Colombia' },
+    { text: '  \u251c\u2500 SMS platform product development (frontend + API + realtime)' },
+    { text: '  \u251c\u2500 Interfaces focused on clarity, usability & efficiency' },
+    { text: '  \u251c\u2500 Multi-user, high-concurrency features' },
+    { text: '  \u2514\u2500 TypeScript monorepo, strict typing, technical docs' },
+    { text: '' },
+    { type: 'heading', text: 'Twnel' },
+    { type: 'dim',     text: 'Software Developer \u00b7 Jun 2022 - Jan 2025 \u00b7 Remote, Colombia' },
+    { text: '  \u251c\u2500 Messaging platform (UX + integrations + automation)' },
+    { text: '  \u251c\u2500 Built core UI/UX for SMS platform' },
+    { text: '  \u251c\u2500 AI: translations, transcriptions, suggestions, bots' },
+    { text: '  \u2514\u2500 Android mobile dev + external integrations' },
+    { text: '' },
+    { type: 'heading', text: 'Universidad del Rosario' },
+    { type: 'dim',     text: 'Academic Tutor \u00b7 2021 - 2025 \u00b7 Bogota, Colombia' },
+    { text: '  \u251c\u2500 4 years tutoring programming & engineering courses' },
+    { text: '  \u2514\u2500 Technical communication & teaching complex concepts' },
+  ],
+
+  projects: () => [
+    { type: 'heading', text: 'not-the-louvre' },
+    { type: 'dim',     text: 'SvelteKit \u00b7 Supabase \u00b7 Canvas API \u00b7 Threlte' },
+    { text: '  Social drawing game built for a hackathon.' },
+    { text: '  Real-time drawing, publishing, forking & voting.' },
+    { type: 'link',    text: '  \u2192 https://github.com/Oktuvida/not-the-louvre' },
+    { text: '' },
+    { type: 'heading', text: 'splitify' },
+    { type: 'dim',     text: 'TypeScript \u00b7 VS Code \u00b7 Git \u00b7 GitHub' },
+    { text: '  AI-powered commit grouping for VS Code.' },
+    { text: '  Turn messy changes into clean, atomic commits.' },
+    { type: 'link',    text: '  \u2192 https://github.com/GH-Jaider/splitify' },
+    { text: '' },
+    { type: 'heading', text: 'VS-Karel' },
+    { type: 'dim',     text: 'TypeScript \u00b7 VS Code \u00b7 Canvas' },
+    { text: '  Interactive visualizer for Karel the Robot.' },
+    { text: '  Step-by-step execution & real-time diagnostics.' },
+    { type: 'link',    text: '  \u2192 https://github.com/GH-Jaider/VS-Karel' },
+  ],
+
+  repos: () => [
+    { type: 'heading', text: 'Public repositories' },
+    { text: '' },
+    { type: 'bar',  text: '  splitify                 AI-powered commit grouping for VS Code' },
+    { type: 'bar',  text: '  VS-Karel                 VS Code extension for Karel the Robot' },
+    { type: 'bar',  text: '  sesamo-whatsapp-bot      WhatsApp bot' },
+    { type: 'bar',  text: '  opencode-agent-flowkit   CLI tool for OpenCode agent workflows' },
+    { type: 'bar',  text: '  n8n-nodes-inalambria     n8n node for SMS via Inalambria' },
+    { type: 'bar',  text: '  Collisions-Simulator     Elastic collision simulator (Python)' },
+    { type: 'bar',  text: '  Py.Karel                 Karel language interpreter (Python)' },
+    { text: '' },
+    { type: 'link', text: '  Browse all \u2192 https://github.com/GH-Jaider?tab=repositories' },
+  ],
+
+  education: () => [
+    { type: 'heading', text: 'Universidad del Rosario' },
+    { type: 'dim',     text: 'Bogota, Colombia' },
+    { text: '' },
+    { text: '  Applied Mathematics & Computer Science   May 2025' },
+    { text: '  Electronic Engineering                   Mar 2025' },
+    { text: '' },
+    { type: 'dim', text: '  \u2605 Academic scholarship recipient' },
+  ],
+
+  contact: () => [
+    { type: 'heading', text: "Let's connect" },
+    { text: '' },
+    { text: '  Email       correodejaider@gmail.com' },
+    { type: 'link', text: '  LinkedIn    https://linkedin.com/in/jaider-vd' },
+    { type: 'link', text: '  GitHub      https://github.com/GH-Jaider' },
+  ],
+
+  tools: () => [
+    { type: 'heading', text: 'Dev environment' },
+    { text: '' },
+    { text: '  Editor            VS Code' },
+    { text: '  AI Assistants     OpenCode, GitHub Copilot' },
+    { text: '  Package Mgmt      pnpm, Turborepo' },
+    { text: '  Automation        n8n' },
+    { text: '  API Design        OpenAPI, Fastify' },
+    { text: '  Deployment        GitHub Pages, Vercel' },
+    { text: '  Version Control   Git + GitHub' },
+  ],
+
+  languages: () => [
+    { type: 'heading', text: 'Spoken languages' },
+    { text: '' },
+    { text: '  Spanish     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  native' },
+    { text: '  English     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591  B2' },
+  ],
+};
+
+const terminal = document.getElementById('terminal');
+const input    = document.getElementById('input');
+let inputRow   = input.parentElement;
+let isTyping   = false;
+const history  = [];
+let historyIdx = -1;
+
+function scrollBottom() {
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function createLine(text, className) {
+  const div = document.createElement('div');
+  div.className = 'line' + (className ? ' ' + className : '');
+  div.textContent = text;
+  return div;
+}
+
+function freezePrompt(cmd) {
+  const frozen = document.createElement('div');
+  frozen.className = 'line prompt-line';
+  frozen.innerHTML = '<span class="prompt-prefix">' + PROMPT + '</span><span class="cmd-text">' + escapeHtml(cmd) + '</span>';
+  terminal.insertBefore(frozen, inputRow);
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function typeLines(lines) {
+  isTyping = true;
+  input.disabled = true;
+
+  for (const line of lines) {
+    let cls = 'output';
+    if (line.type === 'heading')  cls = 'output heading';
+    else if (line.type === 'dim') cls = 'output dim';
+    else if (line.type === 'ascii') cls = 'output ascii';
+    else if (line.type === 'link') cls = 'output link-line';
+    else if (line.type === 'error') cls = 'output error';
+    else if (line.type === 'bar') cls = 'output bar';
+
+    const el = createLine('', cls);
+    terminal.insertBefore(el, inputRow);
+
+    const text = line.text || '';
+    if (text.length <= 60) {
+      for (let i = 0; i < text.length; i++) {
+        el.textContent += text[i];
+        scrollBottom();
+        await sleep(8);
+      }
+    } else {
+      const chunk = 4;
+      for (let i = 0; i < text.length; i += chunk) {
+        el.textContent += text.slice(i, i + chunk);
+        scrollBottom();
+        await sleep(6);
+      }
+    }
+
+    if (line.type === 'link') {
+      const raw = el.textContent;
+      const urlMatch = raw.match(/(https?:\/\/[^\s]+)/);
+      if (urlMatch) {
+        const url = urlMatch[1];
+        const before = raw.slice(0, urlMatch.index);
+        const after = raw.slice(urlMatch.index + url.length);
+        el.innerHTML = escapeHtml(before) + '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + escapeHtml(url) + '</a>' + escapeHtml(after);
+      }
+    }
+
+    await sleep(20);
+  }
+
+  const spacer = document.createElement('div');
+  spacer.className = 'spacer';
+  terminal.insertBefore(spacer, inputRow);
+
+  isTyping = false;
+  input.disabled = false;
+  input.focus();
+  scrollBottom();
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function exec(raw) {
+  const cmd = raw.trim().toLowerCase();
+  if (!cmd) return;
+
+  history.unshift(raw.trim());
+  historyIdx = -1;
+
+  freezePrompt(raw.trim());
+
+  if (cmd === 'clear') {
+    while (terminal.firstChild !== inputRow) {
+      terminal.removeChild(terminal.firstChild);
+    }
+    scrollBottom();
+    return;
+  }
+
+  const handler = COMMANDS[cmd];
+  if (handler) {
+    typeLines(handler());
+  } else {
+    typeLines([
+      { type: 'error', text: 'command not found: ' + cmd },
+      { text: "Type 'help' to see available commands." },
+    ]);
+  }
+}
+
+input.addEventListener('keydown', (e) => {
+  if (isTyping) { e.preventDefault(); return; }
+
+  if (e.key === 'Enter') {
+    const val = input.value;
+    input.value = '';
+    exec(val);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (history.length && historyIdx < history.length - 1) {
+      historyIdx++;
+      input.value = history[historyIdx];
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (historyIdx > 0) {
+      historyIdx--;
+      input.value = history[historyIdx];
+    } else {
+      historyIdx = -1;
+      input.value = '';
+    }
+  } else if (e.key === 'l' && e.ctrlKey) {
+    e.preventDefault();
+    exec('clear');
+  }
+});
+
+terminal.addEventListener('click', () => {
+  if (!isTyping) input.focus();
+});
+
+(async () => {
+  await sleep(300);
+  await typeLines([
+    { type: 'ascii', text: '     __      _     __           ' },
+    { type: 'ascii', text: '    / /___ _(_)___/ /__  ____   ' },
+    { type: 'ascii', text: '   / / __ \'/ / __  / _ \\/ __/   ' },
+    { type: 'ascii', text: '  / / /_/ / / /_/ /  __/ /      ' },
+    { type: 'ascii', text: ' /_/\\__,_/_/\\__,_/\\___/_/       ' },
+    { text: '' },
+    { text: "Welcome! I'm Jaider Velasco." },
+    { type: 'dim', text: 'Web Developer & Software Engineer \u2014 Bogota, Colombia' },
+    { text: '' },
+    { text: "Type 'help' to see available commands." },
+  ]);
+})();
+</script>
+</body>
+</html>
