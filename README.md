@@ -16,9 +16,11 @@
   <a href="#languages"><code>languages</code></a>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="whoami"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/whoami.svg" alt="whoami" width="800" />
@@ -28,9 +30,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="skills"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/skills.svg" alt="skills" width="800" />
@@ -40,9 +44,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="experience"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/experience.svg" alt="experience" width="800" />
@@ -52,9 +58,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="projects"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/projects.svg" alt="projects" width="800" />
@@ -64,9 +72,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="repos"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/repos.svg" alt="repos" width="800" />
@@ -76,9 +86,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="education"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/education.svg" alt="education" width="800" />
@@ -88,9 +100,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="contact"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/contact.svg" alt="contact" width="800" />
@@ -100,9 +114,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="tools"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/tools.svg" alt="tools" width="800" />
@@ -112,9 +128,11 @@
   <sub><a href="#top"><code>$ clear</code></a></sub>
 </p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a id="languages"></a>
+
+<br><br><br><br>
 
 <p align="center">
   <img src="commands/languages.svg" alt="languages" width="800" />
