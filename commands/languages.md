@@ -1,0 +1,12 @@
+# `> languages`
+
+```
+ Spoken languages
+
+   Spanish     ████████████████████  native
+   English     ██████████████░░░░░░  B2
+```
+
+---
+
+<kbd>[<- back](../README.md)</kbd>
