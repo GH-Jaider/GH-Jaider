@@ -1,69 +1,154 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="634" viewBox="0 0 900 634" fill="none">
   <style>
-    .bg { fill: #0d1117; }
-    .bar { fill: #161b22; }
-    .border { stroke: #1a1f2b; stroke-width: 1; fill: none; }
-    .dot-r { fill: #ff5f57; }
-    .dot-y { fill: #febc2e; }
-    .dot-g { fill: #28c840; }
-    .title { fill: #4b5563; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
-    .prompt { fill: #7dd3fc; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cmd { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .ascii { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .heading { fill: #fbbf24; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; font-weight: 700; }
-    .text { fill: #c5cdd9; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .dim { fill: #4b5563; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .link { fill: #60a5fa; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
-    .cursor { fill: #34d399; font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap');
+    .bg { fill: #000000; }
+    .header { fill: #141414; }
+    .tab-bg { fill: #1c1c1c; }
+    .mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 13px; }
+    .small { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; }
+    .dim { fill: #777777; }
+    .icon { stroke: #999999; fill: none; stroke-width: 1.5; }
+    .icon-bright { stroke: #ffffff; fill: none; stroke-width: 1.5; stroke-linecap: round; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .blink { animation: blink 1.2s step-end infinite; }
+    .blink { animation: blink 1s step-end infinite; }
   </style>
 
-  <!-- Window -->
-  <rect class="bg" x="0" y="0" width="800" height="480" rx="12" />
-  <rect class="border" x="0.5" y="0.5" width="799" height="479" rx="12" />
+  <!-- Window background with border -->
+  <rect class="bg" width="900" height="634" rx="12"/>
+  <rect x="0.5" y="0.5" width="899" height="633" rx="12" stroke="#222222" fill="none"/>
 
-  <!-- Title bar -->
-  <rect class="bar" x="1" y="1" width="798" height="40" rx="12" />
-  <rect class="bg" x="1" y="30" width="798" height="12" />
-  <line x1="1" y1="41" x2="799" y2="41" stroke="#1a1f2b" stroke-width="1" />
-  <circle class="dot-r" cx="24" cy="21" r="6" />
-  <circle class="dot-y" cx="44" cy="21" r="6" />
-  <circle class="dot-g" cx="64" cy="21" r="6" />
-  <text class="title" x="400" y="25" text-anchor="middle">jaider@github &#8212; zsh</text>
+  <!-- ═══ TITLE BAR ═══ -->
+  <rect class="header" x="1" y="1" width="898" height="44" rx="12"/>
+  <!-- Cover bottom corners of header -->
+  <rect class="header" x="1" y="34" width="898" height="10"/>
+  <line x1="1" y1="44" x2="899" y2="44" stroke="#1a1a1a" stroke-width="1"/>
 
-  <!-- Terminal content -->
-  <g transform="translate(24, 62)">
-    <!-- $ help -->
-    <text class="prompt" y="0">jaider@github:~$</text>
-    <text class="cmd" x="152" y="0">help</text>
-
-    <!-- ASCII art -->
-    <text class="ascii" y="28" xml:space="preserve">     __      _     __           </text>
-    <text class="ascii" y="45" xml:space="preserve">    / /___ _(_)___/ /__  ____   </text>
-    <text class="ascii" y="62" xml:space="preserve">   / / __ '/ / __  / _ \/ __/   </text>
-    <text class="ascii" y="79" xml:space="preserve">  / / /_/ / / /_/ /  __/ /      </text>
-    <text class="ascii" y="96" xml:space="preserve"> /_/\__,_/_/\__,_/\___/_/       </text>
-
-    <!-- Heading -->
-    <text class="heading" y="130">Available commands:</text>
-
-    <!-- Commands list -->
-    <text class="text" y="156" xml:space="preserve">  whoami       </text><text class="dim" x="140" y="156">Who am I?</text>
-    <text class="text" y="174" xml:space="preserve">  skills       </text><text class="dim" x="140" y="174">Languages, frameworks &amp; tools</text>
-    <text class="text" y="192" xml:space="preserve">  experience   </text><text class="dim" x="140" y="192">Work history</text>
-    <text class="text" y="210" xml:space="preserve">  projects     </text><text class="dim" x="140" y="210">Selected projects</text>
-    <text class="text" y="228" xml:space="preserve">  repos        </text><text class="dim" x="140" y="228">GitHub repositories</text>
-    <text class="text" y="246" xml:space="preserve">  education    </text><text class="dim" x="140" y="246">Academic background</text>
-    <text class="text" y="264" xml:space="preserve">  contact      </text><text class="dim" x="140" y="264">Get in touch</text>
-    <text class="text" y="282" xml:space="preserve">  tools        </text><text class="dim" x="140" y="282">Dev environment &amp; workflow</text>
-    <text class="text" y="300" xml:space="preserve">  languages    </text><text class="dim" x="140" y="300">Spoken languages</text>
-    <text class="text" y="318" xml:space="preserve">  interactive  </text><text class="dim" x="140" y="318">Launch the live terminal</text>
-    <text class="text" y="336" xml:space="preserve">  clear        </text><text class="dim" x="140" y="336">Clear the terminal</text>
-    <text class="text" y="354" xml:space="preserve">  help         </text><text class="dim" x="140" y="354">Show this message</text>
-
-    <!-- Prompt with blinking cursor -->
-    <text class="prompt" y="390">jaider@github:~$</text>
-    <text class="cursor blink" x="152" y="390">&#9608;</text>
+  <!-- Sidebar toggle: panel icon (rect + vertical divider) -->
+  <g transform="translate(14, 14)">
+    <rect x="0" y="0" width="16" height="16" rx="2.5" stroke="#999999" stroke-width="1.3" fill="none"/>
+    <line x1="5.5" y1="0" x2="5.5" y2="16" stroke="#999999" stroke-width="1.3"/>
   </g>
+
+  <!-- Tab background -->
+  <rect class="tab-bg" x="44" y="1" width="190" height="43"/>
+  <line x1="234" y1="8" x2="234" y2="36" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- Tab icon: terminal window (rect + horizontal line + underscore) -->
+  <g transform="translate(56, 14)">
+    <rect x="0" y="1.5" width="14" height="13" rx="1.5" stroke="#999999" stroke-width="1.2" fill="none"/>
+    <line x1="0" y1="5.5" x2="14" y2="5.5" stroke="#999999" stroke-width="1"/>
+    <text x="7" y="13" text-anchor="middle" font-size="6" fill="#999999" stroke="none" font-family="monospace">_</text>
+  </g>
+
+  <!-- Tab title -->
+  <text class="small" fill="#dddddd" x="80" y="26">jaider@github:~</text>
+
+  <!-- + button -->
+  <g transform="translate(245, 15)">
+    <line x1="7" y1="2" x2="7" y2="12" stroke="#999999" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="2" y1="7" x2="12" y2="7" stroke="#999999" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+
+  <!-- Chevron DOWN (not right!) -->
+  <g transform="translate(275, 15)">
+    <polyline points="3,5 7,9 11,5" stroke="#999999" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Window controls (right side, white strokes) -->
+  <!-- Minimize -->
+  <g transform="translate(780, 15)">
+    <line x1="2" y1="7" x2="12" y2="7" class="icon-bright"/>
+  </g>
+  <!-- Maximize -->
+  <g transform="translate(820, 15)">
+    <rect x="2.5" y="2.5" width="9" height="9" rx="1.5" stroke="#ffffff" stroke-width="1.3" fill="none"/>
+  </g>
+  <!-- Close -->
+  <g transform="translate(860, 15)">
+    <line x1="3" y1="3" x2="11" y2="11" class="icon-bright"/>
+    <line x1="11" y1="3" x2="3" y2="11" class="icon-bright"/>
+  </g>
+
+  <!-- ═══ TERMINAL BODY ═══ -->
+
+  <text class="mono" fill="#7dd3fc" x="20" y="80">jaider@github:~$</text>
+  <text class="mono" fill="#01d68a" x="152.6" y="80"> fastfetch</text>
+  <text class="mono" fill="#01d68a" x="20" y="116.0" xml:space="preserve">                                   ▄▄▒▒▒▒▒▒▄▄               </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="116.0">jaider@github</text>
+  <text class="mono" fill="#01d68a" x="20" y="136.0" xml:space="preserve">                                 ▄▒▒▒▒▒▒▒▒▒▒░▒▒▄▒▒▄         </text>
+  <text class="mono" fill="#555555" x="511.4" y="136.0">──────────────────────</text>
+  <text class="mono" fill="#01d68a" x="20" y="156.0" xml:space="preserve">                                ▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░▄        </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="156.0">OS</text>
+  <text class="mono" fill="#555555" x="527.0" y="156.0">: </text>
+  <text class="mono" fill="#dddddd" x="542.6" y="156.0">Linux, Windows, MacOS (?)</text>
+  <text class="mono" fill="#01d68a" x="20" y="176.0" xml:space="preserve">                  ▄▄ ▄▄         ▒▒▒░░░▒▒▒▒▒▒▒▒▒▒▒▓▒▒        </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="176.0">Host</text>
+  <text class="mono" fill="#555555" x="542.6" y="176.0">: </text>
+  <text class="mono" fill="#dddddd" x="558.1999999999999" y="176.0">Inalambria Internacional</text>
+  <text class="mono" fill="#01d68a" x="20" y="196.0" xml:space="preserve">                  ▀▒▒▒▀        ▒▒▒▒▒░░▒▓▓▓▒▒▒▒▒▒▒▒▒▒▒       </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="196.0">Kernel</text>
+  <text class="mono" fill="#555555" x="558.1999999999999" y="196.0">: </text>
+  <text class="mono" fill="#dddddd" x="573.8" y="196.0">Software Engineer</text>
+  <text class="mono" fill="#01d68a" x="20" y="216.0" xml:space="preserve">                   ▀▀          ▀▒▓▓▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▀     </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="216.0">Uptime</text>
+  <text class="mono" fill="#555555" x="558.1999999999999" y="216.0">: </text>
+  <text class="mono" fill="#dddddd" x="573.8" y="216.0">4 years (?)</text>
+  <text class="mono" fill="#01d68a" x="20" y="236.0" xml:space="preserve">                                ▓▒░░░░░░░░▒▒▒▒▒▓▓▒▒▓▒▒      </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="236.0">IDE</text>
+  <text class="mono" fill="#555555" x="534.8" y="236.0">: </text>
+  <text class="mono" fill="#dddddd" x="550.4" y="236.0">VS Code + OpenCode</text>
+  <text class="mono" fill="#01d68a" x="20" y="256.0" xml:space="preserve">                                 ▓▒░▒░░░░░░▒▒▒▓▓▄▓▒▒▒▒      </text>
+  <text class="mono" fill="#01d68a" x="20" y="276.0" xml:space="preserve">                                ▄▒▓▒▓▓▓▓▒▒▓▒▒▒▒▒▒▒▓▓▓▒▄     </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="276.0">Interests</text>
+  <text class="mono" fill="#555555" x="581.6" y="276.0">: </text>
+  <text class="mono" fill="#dddddd" x="597.1999999999999" y="276.0">Architecture, UX, AI Workflows</text>
+  <text class="mono" fill="#01d68a" x="20" y="296.0" xml:space="preserve">     ▄▄▄▄▄▄▄▄                   ▒▒▒▓▒▒▒▒▒▒▓▓▒▒▒▓▓▒▒▒▓▓▒     </text>
+  <text class="mono" fill="#dddddd" x="605.8" y="296.0">Games, Art</text>
+  <text class="mono" fill="#01d68a" x="20" y="316.0" xml:space="preserve">    ▀▀▀▒░░░░░░▄▄▄              ▄░▒▒▓▓▒▒▒▒▓▓▓▒▒▓▓▓▒▓▓▓▒▒▒    </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="316.0">Hardware</text>
+  <text class="mono" fill="#555555" x="581.6" y="316.0">: </text>
+  <text class="mono" fill="#dddddd" x="597.0" y="316.0">Messing with ESP32s and STM32s</text>
+  <text class="mono" fill="#01d68a" x="20" y="336.0" xml:space="preserve"> ▄▒▄▒▒▒▒▒▒▒▒▒░░░░▒▒▄         ▄▒▒▒▒▒▓▓▓▒▒▒▒▓▓▓▓▓▓▒▒▓▓▓▒▒     </text>
+  <text class="mono" fill="#dddddd" x="605.8" y="336.0">sensors and jumpers</text>
+  <text class="mono" fill="#01d68a" x="20" y="356.0" xml:space="preserve">▀▀▀▀▀▀▀▀▀▒░▀▒▒▒▒▒▒▒░▒▄      ▒░▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▓▓▒▒▄    </text>
+  <text class="mono" fill="#01d68a" x="20" y="376.0" xml:space="preserve">            ▒▒▓▓▒▒▒▒▒▒▒▄  ▄░░░▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▓▓▒▓▓▒▒▒░▄   </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="376.0">Spoken</text>
+  <text class="mono" fill="#555555" x="558.1999999999999" y="376.0">: </text>
+  <text class="mono" fill="#dddddd" x="573.8" y="376.0">Spanish (native), English (B2)</text>
+  <text class="mono" fill="#01d68a" x="20" y="396.0" xml:space="preserve">            ▓▒▒▓▒▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░░▒▒▒░░░░▓▒▒▒▒▒▒▒░░░▄  </text>
+  <text class="mono" fill="#01d68a" x="20" y="416.0" xml:space="preserve">            ▒▒▓▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒  </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="416.0">Email</text>
+  <text class="mono" fill="#555555" x="550.4" y="416.0">: </text>
+  <text class="mono" fill="#60a5fa" x="566.0" y="416.0">correodejaider@gmail.com</text>
+  <text class="mono" fill="#01d68a" x="20" y="436.0" xml:space="preserve">            ▒▒▓▓▓▒▒▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒ </text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="436.0">LinkedIn</text>
+  <text class="mono" fill="#555555" x="573.8" y="436.0">: </text>
+  <text class="mono" fill="#60a5fa" x="589.4" y="436.0">linkedin.com/in/jaider-vd</text>
+  <text class="mono" fill="#01d68a" x="20" y="456.0" xml:space="preserve">             ▀▒▒▒▒▒▒▓▒▒▒▒▒▓▒▒▒▒▒▒▒▒░░▒▒░░░░░░░░▒▒▒▒▓▒▒▒▒▒░░▒</text>
+  <text class="mono" fill="#01d68a" font-weight="bold" x="511.4" y="456.0">GitHub</text>
+  <text class="mono" fill="#555555" x="558.1999999999999" y="456.0">: </text>
+  <text class="mono" fill="#60a5fa" x="573.8" y="456.0">github.com/GH-Jaider</text>
+
+  <!-- Bottom bar -->
+  <line x1="1" y1="564" x2="899" y2="564" stroke="#1a1a1a" stroke-width="1"/>
+  <rect fill="#000000" x="1" y="564" width="898" height="70"/>
+
+  <!-- Bottom rounded corners -->
+  <rect fill="#000000" x="1" y="622" width="898" height="11" rx="12"/>
+
+  <!-- Path pill row -->
+  <rect fill="#141414" x="14" y="572" width="56" height="24" rx="5" stroke="#2a2a2a" stroke-width="1"/>
+  <!-- Folder icon -->
+  <g transform="translate(20, 577)">
+    <path d="M1,2.5 C1,1.7 1.7,1 2.5,1 L5,1 L6.5,2.5 L11.5,2.5 C12.3,2.5 13,3.2 13,4 L13,10 C13,10.8 12.3,11.5 11.5,11.5 L2.5,11.5 C1.7,11.5 1,10.8 1,10 Z" stroke="#999999" stroke-width="1.1" fill="none"/>
+  </g>
+  <text class="small" fill="#bbbbbb" x="38" y="588">~</text>
+
+  <!-- $ prompt row with interactive link -->
+  <text class="mono" fill="#01d68a" font-weight="bold" opacity="0.7" x="16" y="616">$</text>
+  <a href="https://gh-jaider.github.io/GH-Jaider/" target="_blank">
+    <text class="mono" fill="#60a5fa" x="30" y="616" text-decoration="none">visit gh-jaider.github.io/GH-Jaider/</text>
+  </a>
+  <text class="mono blink" fill="#01d68a" x="319" y="616">█</text>
+
 </svg>
