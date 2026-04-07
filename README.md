@@ -16,110 +16,80 @@
   <a href="#languages"><code>languages</code></a>
 </p>
 
----
+<br><br><br><br><br><br><br><br>
 
 <a id="whoami"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>whoami</b></summary>
-<br>
-<img src="commands/whoami.svg" alt="whoami" width="800" />
-</details>
+<p align="center">
+  <img src="commands/whoami.svg" alt="whoami" width="800" />
+</p>
 
-<sub><code>jaider@github:~/whoami$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="skills"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>skills</b></summary>
-<br>
-<img src="commands/skills.svg" alt="skills" width="800" />
-</details>
+<p align="center">
+  <img src="commands/skills.svg" alt="skills" width="800" />
+</p>
 
-<sub><code>jaider@github:~/skills$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="experience"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>experience</b></summary>
-<br>
-<img src="commands/experience.svg" alt="experience" width="800" />
-</details>
+<p align="center">
+  <img src="commands/experience.svg" alt="experience" width="800" />
+</p>
 
-<sub><code>jaider@github:~/experience$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="projects"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>projects</b></summary>
-<br>
-<img src="commands/projects.svg" alt="projects" width="800" />
-</details>
+<p align="center">
+  <img src="commands/projects.svg" alt="projects" width="800" />
+</p>
 
-<sub><code>jaider@github:~/projects$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="repos"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>repos</b></summary>
-<br>
-<img src="commands/repos.svg" alt="repos" width="800" />
-</details>
+<p align="center">
+  <img src="commands/repos.svg" alt="repos" width="800" />
+</p>
 
-<sub><code>jaider@github:~/repos$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="education"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>education</b></summary>
-<br>
-<img src="commands/education.svg" alt="education" width="800" />
-</details>
+<p align="center">
+  <img src="commands/education.svg" alt="education" width="800" />
+</p>
 
-<sub><code>jaider@github:~/education$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="contact"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>contact</b></summary>
-<br>
-<img src="commands/contact.svg" alt="contact" width="800" />
-</details>
+<p align="center">
+  <img src="commands/contact.svg" alt="contact" width="800" />
+</p>
 
-<sub><code>jaider@github:~/contact$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="tools"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>tools</b></summary>
-<br>
-<img src="commands/tools.svg" alt="tools" width="800" />
-</details>
+<p align="center">
+  <img src="commands/tools.svg" alt="tools" width="800" />
+</p>
 
-<sub><code>jaider@github:~/tools$</code> <a href="#top"><b>cd ..</b></a></sub>
-
----
+<br><br><br><br><br><br><br><br>
 
 <a id="languages"></a>
 
-<details>
-<summary><code>jaider@github:~$</code> <b>languages</b></summary>
-<br>
-<img src="commands/languages.svg" alt="languages" width="800" />
-</details>
+<p align="center">
+  <img src="commands/languages.svg" alt="languages" width="800" />
+</p>
 
-<sub><code>jaider@github:~/languages$</code> <a href="#top"><b>cd ..</b></a></sub>
+<br><br><br><br>
+
+<p align="center">
+  <sub><a href="#top">↑ back to top</a></sub>
+</p>
