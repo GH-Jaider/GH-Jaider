@@ -416,7 +416,7 @@
         </svg>
       </div>
       <!-- Close -->
-      <div class="wctrl close" title="Close">
+      <div class="wctrl close" title="Close" data-action="close-terminal" role="button" tabindex="0" aria-label="Close terminal">
         <svg viewBox="0 0 14 14">
           <line x1="3" y1="3" x2="11" y2="11" />
           <line x1="11" y1="3" x2="3" y2="11" />
@@ -683,9 +683,11 @@ whoami: () => [
 // ── DOM refs ──
 const terminal = document.getElementById('terminal');
 const input    = document.getElementById('input');
+const closeBtn = document.querySelector('[data-action="close-terminal"]');
 let isTyping   = false;
 const history  = [];
 let historyIdx = -1;
+const commandNames = Object.keys(COMMANDS).concat('neofetch');
 
 // ── helpers ──
 function scrollBottom() {
@@ -701,6 +703,16 @@ function createLine(text, className) {
 
 function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getAutocompleteMatch(value) {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const matches = commandNames.filter((name) => name.startsWith(trimmed.toLowerCase()));
+  if (matches.length !== 1) return null;
+
+  return matches[0];
 }
 
 // Warp-style: create a command block with prompt + output
@@ -741,6 +753,8 @@ async function typeLines(lines, cmd) {
     container = welcome;
   }
 
+  const shouldTypeAnimated = lines.length <= 12;
+
   for (const line of lines) {
     let cls = 'output';
     if (line.type === 'heading')  cls = 'output heading';
@@ -758,7 +772,6 @@ async function typeLines(lines, cmd) {
     if (line.html) {
       el.innerHTML = line.html;
       scrollBottom();
-      await sleep(20);
       continue;
     }
 
@@ -770,24 +783,23 @@ async function typeLines(lines, cmd) {
       el.className = 'line output';
       el.style.whiteSpace = 'pre';
       scrollBottom();
-      await sleep(30);
       continue;
     }
 
-    // Fast "type" effect — reveal char by char for short lines, batch for long
-    if (text.length <= 60) {
-      for (let i = 0; i < text.length; i++) {
-        el.textContent += text[i];
+    if (!shouldTypeAnimated) {
+      el.textContent = text;
+      scrollBottom();
+    } else if (text.length <= 48) {
+      for (let i = 0; i < text.length; i += 3) {
+        el.textContent += text.slice(i, i + 3);
         scrollBottom();
-        await sleep(8);
+        await sleep(4);
       }
     } else {
-      // Batch in chunks
-      const chunk = 4;
-      for (let i = 0; i < text.length; i += chunk) {
-        el.textContent += text.slice(i, i + chunk);
+      for (let i = 0; i < text.length; i += 8) {
+        el.textContent += text.slice(i, i + 8);
         scrollBottom();
-        await sleep(6);
+        await sleep(4);
       }
     }
 
@@ -808,8 +820,6 @@ async function typeLines(lines, cmd) {
         el.innerHTML = escapeHtml(before) + `<a href="mailto:${escapeHtml(email)}" rel="noopener">${escapeHtml(email)}</a>` + escapeHtml(after);
       }
     }
-
-    await sleep(20);
   }
 
   isTyping = false;
@@ -860,7 +870,13 @@ function exec(raw) {
 input.addEventListener('keydown', (e) => {
   if (isTyping) { e.preventDefault(); return; }
 
-  if (e.key === 'Enter') {
+  if (e.key === 'Tab') {
+    const match = getAutocompleteMatch(input.value);
+    if (match) {
+      e.preventDefault();
+      input.value = match;
+    }
+  } else if (e.key === 'Enter') {
     const val = input.value;
     input.value = '';
     exec(val);
@@ -888,6 +904,18 @@ input.addEventListener('keydown', (e) => {
 // keep focus on input
 document.querySelector('.terminal').addEventListener('click', () => {
   if (!isTyping) input.focus();
+});
+
+function closeTerminal() {
+  window.location.href = 'https://github.com/GH-Jaider';
+}
+
+closeBtn.addEventListener('click', closeTerminal);
+closeBtn.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    closeTerminal();
+  }
 });
 
 // ── boot sequence ──
