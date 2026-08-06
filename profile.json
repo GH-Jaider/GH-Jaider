@@ -1,0 +1,101 @@
+{
+  "_comment": "Single source of truth for the fastfetch section. Run `node scripts/generate.mjs` after editing to regenerate terminal.svg and patch index.html.",
+  "user": "jaider@github",
+  "fetchCommand": "fastfetch",
+  "art": [
+    "                                   ▄▄▒▒▒▒▒▒▄▄               ",
+    "                                 ▄▒▒▒▒▒▒▒▒▒▒░▒▒▄▒▒▄         ",
+    "                                ▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░▄        ",
+    "                  ▄▄ ▄▄         ▒▒▒░░░▒▒▒▒▒▒▒▒▒▒▒▓▒▒        ",
+    "                  ▀▒▒▒▀        ▒▒▒▒▒░░▒▓▓▓▒▒▒▒▒▒▒▒▒▒▒       ",
+    "                   ▀▀          ▀▒▓▓▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▀     ",
+    "                                ▓▒░░░░░░░░▒▒▒▒▒▓▓▒▒▓▒▒      ",
+    "                                 ▓▒░▒░░░░░░▒▒▒▓▓▄▓▒▒▒▒      ",
+    "                                ▄▒▓▒▓▓▓▓▒▒▓▒▒▒▒▒▒▒▓▓▓▒▄     ",
+    "     ▄▄▄▄▄▄▄▄                   ▒▒▒▓▒▒▒▒▒▒▓▓▒▒▒▓▓▒▒▒▓▓▒     ",
+    "    ▀▀▀▒░░░░░░▄▄▄              ▄░▒▒▓▓▒▒▒▒▓▓▓▒▒▓▓▓▒▓▓▓▒▒▒    ",
+    " ▄▒▄▒▒▒▒▒▒▒▒▒░░░░▒▒▄         ▄▒▒▒▒▒▓▓▓▒▒▒▒▓▓▓▓▓▓▒▒▓▓▓▒▒     ",
+    "▀▀▀▀▀▀▀▀▀▒░▀▒▒▒▒▒▒▒░▒▄      ▒░▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▓▓▒▒▄    ",
+    "            ▒▒▓▓▒▒▒▒▒▒▒▄  ▄░░░▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▓▓▒▓▓▒▒▒░▄   ",
+    "            ▓▒▒▓▒▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░░▒▒▒░░░░▓▒▒▒▒▒▒▒░░░▄  ",
+    "            ▒▒▓▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒  ",
+    "            ▒▒▓▓▓▒▒▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒ ",
+    "             ▀▒▒▒▒▒▒▓▒▒▒▒▒▓▒▒▒▒▒▒▒▒░░▒▒░░░░░░░░▒▒▒▒▓▒▒▒▒▒░░▒"
+  ],
+  "info": [
+    {
+      "title": "jaider@github"
+    },
+    {
+      "sep": true
+    },
+    {
+      "label": "OS",
+      "value": "Linux, Windows, MacOS (?)"
+    },
+    {
+      "label": "Host",
+      "value": "Inalambria Internacional"
+    },
+    {
+      "label": "Kernel",
+      "value": "Software Engineer"
+    },
+    {
+      "label": "Uptime",
+      "value": "5+ years (?)"
+    },
+    {
+      "label": "IDE",
+      "value": "VS Code + Claude Code + OpenCode"
+    },
+    {
+      "blank": true
+    },
+    {
+      "label": "Interests",
+      "value": "Architecture, UX, AI Workflows"
+    },
+    {
+      "label": "Hardware",
+      "value": "Messing with ESP32s & STM32s"
+    },
+    {
+      "blank": true
+    },
+    {
+      "label": "Hobbies",
+      "value": "Gaming, art, learning new things"
+    },
+    {
+      "blank": true
+    },
+    {
+      "label": "Spoken",
+      "value": "Spanish (native), English (B2)"
+    },
+    {
+      "blank": true
+    },
+    {
+      "label": "Email",
+      "value": "correodejaider@gmail.com",
+      "link": true
+    },
+    {
+      "label": "LinkedIn",
+      "value": "linkedin.com/in/jaider-vd",
+      "link": true
+    },
+    {
+      "label": "GitHub",
+      "value": "github.com/GH-Jaider",
+      "link": true
+    }
+  ],
+  "cta": {
+    "command": "open interactive-terminal",
+    "opening": "Opening gh-jaider.github.io/GH-Jaider …",
+    "hint": "→ or just click anywhere — this whole window is a link"
+  }
+}

@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jaider Velasco — Terminal</title>
+<meta name="description" content="Jaider Velasco — Software Engineer in Bogotá, Colombia. An interactive terminal CV: type 'help' to explore projects, skills and experience.">
+<meta property="og:title" content="Jaider Velasco — Interactive Terminal">
+<meta property="og:description" content="A terminal you can actually type in. Explore my projects, skills and experience — start with 'help'.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gh-jaider.github.io/GH-Jaider/">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23000000'/%3E%3Ctext x='2.5' y='11.5' font-family='monospace' font-size='8' fill='%2301d68a'%3E%3E_%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -449,6 +456,7 @@
 
 <script>
 const PROMPT = 'jaider@github:~$ ';
+let reposCache = null;
 
 const COMMANDS = {
   help: () => [
@@ -534,6 +542,14 @@ whoami: () => [
   ],
 
   projects: () => [
+    { type: 'heading', text: 'foley' },
+    { type: 'dim',     text: 'Go · Terminal rendering · VHS-compatible' },
+    { text: '  A foley artist recreates sound in the studio —' },
+    { text: '  foley recreates the terminal: demos rendered from' },
+    { text: '  .tape scripts. No window, no screen capture,' },
+    { text: '  byte-identical takes in gif, mp4, webm or asciicast.' },
+    { type: 'link',    text: '  → https://github.com/GH-Jaider/foley' },
+    { text: '' },
     { type: 'heading', text: 'not-the-louvre' },
     { type: 'dim',     text: 'SvelteKit · Supabase · Canvas API · Threlte' },
     { text: '  Social drawing game built for a hackathon.' },
@@ -553,19 +569,49 @@ whoami: () => [
     { type: 'link',    text: '  → https://github.com/GH-Jaider/VS-Karel' },
   ],
 
-  repos: () => [
-    { type: 'heading', text: 'Public repositories' },
-    { text: '' },
-    { type: 'bar',  text: '  splitify                 AI-powered commit grouping for VS Code' },
-    { type: 'bar',  text: '  VS-Karel                 VS Code extension for Karel the Robot' },
-    { type: 'bar',  text: '  sesamo-whatsapp-bot      WhatsApp bot' },
-    { type: 'bar',  text: '  opencode-agent-flowkit   CLI tool for OpenCode agent workflows' },
-    { type: 'bar',  text: '  n8n-nodes-inalambria     n8n node for SMS via Inalambria' },
-    { type: 'bar',  text: '  Collisions-Simulator     Elastic collision simulator (Python)' },
-    { type: 'bar',  text: '  Py.Karel                 Karel language interpreter (Python)' },
-    { text: '' },
-    { type: 'link', text: '  Browse all → https://github.com/GH-Jaider?tab=repositories' },
-  ],
+  repos: async () => {
+    const fallback = [
+      { type: 'heading', text: 'Public repositories' },
+      { text: '' },
+      { type: 'bar',  text: '  foley                          Terminal demos from .tape scripts  ★3' },
+      { type: 'bar',  text: '  splitify                       AI-powered commit grouping for VS Code  ★4' },
+      { type: 'bar',  text: '  VS-Karel                       VS Code extension for Karel the Robot  ★1' },
+      { type: 'bar',  text: '  sesamo-whatsapp-bot            WhatsApp bot' },
+      { type: 'bar',  text: '  opencode-agent-flowkit         CLI tool for OpenCode agent workflows' },
+      { type: 'bar',  text: '  n8n-nodes-inalambria-express   n8n node for SMS via Inalambria' },
+      { type: 'bar',  text: '  Py.Karel                       Karel language interpreter (Python)  ★1' },
+      { text: '' },
+      { type: 'link', text: '  Browse all → https://github.com/GH-Jaider?tab=repositories' },
+    ];
+    if (reposCache) return reposCache;
+    try {
+      const res = await fetch('https://api.github.com/users/GH-Jaider/repos?per_page=100&type=owner');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = (await res.json())
+        .filter((r) => !r.fork && !r.archived)
+        .sort((a, b) =>
+          (b.stargazers_count - a.stargazers_count) ||
+          (new Date(b.pushed_at) - new Date(a.pushed_at)));
+      if (!data.length) return fallback;
+      const nameW = Math.max(...data.map((r) => r.name.length)) + 3;
+      const lines = [
+        { type: 'heading', text: 'Public repositories' },
+        { text: '' },
+      ];
+      for (const r of data) {
+        let desc = (r.description || '').replace(/\s+/g, ' ').trim();
+        if (desc.length > 48) desc = desc.slice(0, 47).trimEnd() + '…';
+        const stars = r.stargazers_count > 0 ? '  ★' + r.stargazers_count : '';
+        lines.push({ type: 'bar', text: '  ' + r.name.padEnd(nameW) + desc + stars });
+      }
+      lines.push({ text: '' });
+      lines.push({ type: 'link', text: '  Browse all → https://github.com/GH-Jaider?tab=repositories' });
+      reposCache = lines;
+      return lines;
+    } catch (e) {
+      return fallback;
+    }
+  },
 
   education: () => [
     { type: 'heading', text: 'Universidad del Rosario' },
@@ -591,7 +637,7 @@ whoami: () => [
     { text: '  OS                Linux (Fedora)' },
     { text: '  Editor            VS Code' },
     { text: '  Terminal          WARP' },
-    { text: '  AI Assistants     OpenCode, GitHub Copilot' },
+    { text: '  AI Assistants     Claude Code, OpenCode' },
     { text: '  Workflow          SDD, TDD, CI/CD, docs' },
     { text: '  Containerization  Docker' },
     { text: '  Package Mgmt      pnpm, bun, devenv (learning)' },
@@ -599,6 +645,8 @@ whoami: () => [
     { text: '  API Design        OpenAPI, Fastify' },
     { text: '  Deployment        GitHub Pages, Vercel, Cloudflare' },
     { text: '  Version Control   Git + GitHub' },
+    { text: '' },
+    { type: 'dim', text: '  // no fixed model — always testing whatever is newest' },
   ],
 
   languages: () => [
@@ -609,7 +657,7 @@ whoami: () => [
   ],
 
   fastfetch: () => {
-    // ASCII art lines (18 lines, padded to 60 chars)
+    // GEN:art — auto-generated from profile.json by scripts/generate.mjs; edit profile.json instead
     const art = [
       '                                   ▄▄▒▒▒▒▒▒▄▄               ',
       '                                 ▄▒▒▒▒▒▒▒▒▒▒░▒▒▄▒▒▄         ',
@@ -630,15 +678,16 @@ whoami: () => [
       '            ▒▒▓▓▓▒▒▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒ ',
       '             ▀▒▒▒▒▒▒▓▒▒▒▒▒▓▒▒▒▒▒▒▒▒░░▒▒░░░░░░░░▒▒▒▒▓▒▒▒▒▒░░▒',
     ];
-    // Info lines (same count as art, empty string = blank right side)
+    // GEN:art:end
+    // GEN:info — auto-generated from profile.json by scripts/generate.mjs; edit profile.json instead
     const info = [
       { label: 'jaider@github', value: '', bold: true },
       { label: '──────────────────────', value: '', sep: true },
       { label: 'OS', value: 'Linux, Windows, MacOS (?)' },
       { label: 'Host', value: 'Inalambria Internacional' },
       { label: 'Kernel', value: 'Software Engineer' },
-      { label: 'Uptime', value: '4 years (?)' },
-      { label: 'IDE', value: 'VS Code + OpenCode' },
+      { label: 'Uptime', value: '5+ years (?)' },
+      { label: 'IDE', value: 'VS Code + Claude Code + OpenCode' },
       { label: '', value: '' },
       { label: 'Interests', value: 'Architecture, UX, AI Workflows' },
       { label: 'Hardware', value: 'Messing with ESP32s & STM32s' },
@@ -651,6 +700,7 @@ whoami: () => [
       { label: 'LinkedIn', value: 'linkedin.com/in/jaider-vd', link: true },
       { label: 'GitHub', value: 'github.com/GH-Jaider', link: true },
     ];
+    // GEN:info:end
     const lines = [];
     for (let i = 0; i < art.length; i++) {
       const a = art[i];
@@ -857,7 +907,14 @@ function exec(raw) {
     return;
   }
   if (handler) {
-    typeLines(handler(), raw.trim());
+    const out = handler();
+    if (out && typeof out.then === 'function') {
+      isTyping = true;
+      input.disabled = true;
+      out.then((lines) => typeLines(lines, raw.trim()));
+    } else {
+      typeLines(out, raw.trim());
+    }
   } else {
     typeLines([
       { type: 'error', text: `command not found: ${cmd}` },
