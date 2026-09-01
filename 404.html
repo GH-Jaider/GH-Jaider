@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — jaider@github</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23000000'/%3E%3Ctext x='2.5' y='11.5' font-family='monospace' font-size='8' fill='%2301d68a'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#0a0a0a;color:#dddddd;font-family:'JetBrains Mono','Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{display:flex;align-items:center;justify-content:center;padding:24px;min-height:100vh}
+  .terminal{width:100%;max-width:900px;border-radius:12px;border:1px solid #222;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.02),0 25px 80px -12px rgba(0,0,0,.7)}
+  .title-bar{display:flex;align-items:center;height:44px;background:#141414;border-bottom:1px solid #1a1a1a;user-select:none}
+  .tab{display:flex;align-items:center;gap:8px;padding:0 16px;height:100%;min-width:160px;background:#1c1c1c;border-right:1px solid #1a1a1a;margin-left:44px;white-space:nowrap}
+  .tab svg{width:14px;height:14px;stroke:#999;fill:none;stroke-width:1.5}
+  .terminal-body{background:#000;padding:16px 20px;min-height:260px}
+  .command-block{background:#0a0a0a;border:1px solid #1e1e1e;border-left:2px solid #01d68a;border-radius:8px;padding:12px 16px}
+  .block-prompt{margin-bottom:6px}
+  .prompt-prefix{color:#7dd3fc;font-size:12px;opacity:.7}
+  .cmd-text{color:#01d68a;font-weight:700;word-break:break-all}
+  .line{white-space:pre-wrap;word-break:break-word}
+  .error{color:#f87171}
+  .dim{color:#777}
+  a{color:#60a5fa;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .input-bar{border-top:1px solid #1a1a1a;padding:10px 16px 12px;display:flex;gap:8px;align-items:center}
+  .prompt-symbol{color:#01d68a;font-weight:700;opacity:.7}
+  .cursor{color:#01d68a;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion: reduce){.cursor{animation:none}}
+  @media (max-width:640px){body{padding:8px}.terminal{border-radius:8px}.terminal-body{padding:12px}}
+</style>
+</head>
+<body>
+<div class="terminal">
+  <div class="title-bar">
+    <div class="tab">
+      <svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1.5"/><line x1="2" y1="6.5" x2="14" y2="6.5"/></svg>
+      <span>jaider@github:~</span>
+    </div>
+  </div>
+  <div class="terminal-body">
+    <div class="command-block">
+      <div class="block-prompt"><span class="prompt-prefix">jaider@github:~$</span> <span class="cmd-text">cat <span class="path">…</span></span></div>
+      <div class="line error">cat: <span class="path">…</span>: No such file or directory</div>
+      <div class="line"> </div>
+      <div class="line">Nothing lives at that path. The terminal is one level up:</div>
+      <div class="line">  → <a href="https://gh-jaider.github.io/GH-Jaider/">gh-jaider.github.io/GH-Jaider</a></div>
+      <div class="line">  → <a href="https://github.com/GH-Jaider">github.com/GH-Jaider</a></div>
+      <div class="line"> </div>
+      <div class="line dim">// exit status 404</div>
+    </div>
+  </div>
+  <div class="input-bar"><span class="prompt-symbol">$</span><span class="cursor">█</span></div>
+</div>
+<script>
+  var p = location.pathname.replace(/^\/GH-Jaider/, '') || '/';
+  document.querySelectorAll('.path').forEach(function (el) { el.textContent = p; });
+</script>
+</body>
+</html>

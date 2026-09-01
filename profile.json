@@ -1,5 +1,6 @@
 {
-  "_comment": "Single source of truth for the fastfetch section. Run `node scripts/generate.mjs` after editing to regenerate terminal.svg and patch index.html.",
+  "_comment": "Single source of truth for the profile. Run `node scripts/generate.mjs` after editing: it regenerates terminal.svg, patches the GEN blocks in index.html and README.md, and re-renders og.png.",
+  "login": "GH-Jaider",
   "user": "jaider@github",
   "fetchCommand": "fastfetch",
   "art": [
@@ -97,5 +98,143 @@
     "command": "open interactive-terminal",
     "opening": "Opening gh-jaider.github.io/GH-Jaider …",
     "hint": "→ or just click anywhere — this whole window is a link"
-  }
+  },
+  "projects": [
+    {
+      "name": "foley",
+      "repo": "GH-Jaider/foley",
+      "lang": "Go",
+      "stack": "Go · libghostty-vt · pty · kitty graphics",
+      "tagline": "terminal demos rendered from .tape scripts, no screen capture",
+      "lines": [
+        "A foley artist recreates sound in the studio. foley recreates",
+        "the terminal: a VHS-compatible .tape script drives your real",
+        "CLI or TUI on a pty, and every frame is drawn by foley itself.",
+        "Byte-identical takes in gif, mp4, webm, webp or asciicast."
+      ],
+      "install": "brew install GH-Jaider/foley/foley",
+      "site": "https://gh-jaider.github.io/foley/",
+      "demo": {
+        "url": "https://raw.githubusercontent.com/GH-Jaider/foley/HEAD/examples/showcase/showcase.gif",
+        "file": "examples/showcase/showcase.gif",
+        "size": "5.8M",
+        "caption": "the showcase, a trailer shot entirely inside foley"
+      }
+    },
+    {
+      "name": "not-the-louvre",
+      "repo": "Oktuvida/not-the-louvre",
+      "with": "Oktuvida",
+      "lang": "TypeScript",
+      "stack": "SvelteKit · Supabase Realtime · Canvas API · Threlte",
+      "tagline": "a community art party game: draw, publish, fork, get judged",
+      "lines": [
+        "A community art party game built with my friend Oktuvida for",
+        "the midudev Cubepath 2026 hackathon, and our biggest project",
+        "together. Draw something, publish it, fork other people's",
+        "work and let the crowd decide if it is a masterpiece."
+      ],
+      "site": "https://not-the-louvre.art/"
+    },
+    {
+      "name": "obon",
+      "repo": "GH-Jaider/obon",
+      "lang": "Go",
+      "stack": "Go · Bubble Tea",
+      "tagline": "the dev servers your agents left on your ports, sent off",
+      "lines": [
+        "A TUI for the ports on your machine: what is listening, which",
+        "agent started it, whether it is safe to kill, and one keypress",
+        "to send it off. Named after the lanterns of tōrō nagashi."
+      ],
+      "demo": {
+        "url": "https://raw.githubusercontent.com/GH-Jaider/obon/HEAD/assets/demo.gif",
+        "file": "assets/demo.gif",
+        "size": "602K",
+        "caption": "the lantern board"
+      }
+    },
+    {
+      "name": "karel",
+      "repo": "GH-Jaider/karel",
+      "lang": "TypeScript",
+      "stack": "TypeScript monorepo · VS Code extension · Canvas",
+      "tagline": "Karel the Robot: playground, interpreter, grader, VS Code ext",
+      "lines": [
+        "Learn and teach Karel the Robot: eleven chapters, fifteen",
+        "worlds and a sandbox in the browser, a zero-dependency",
+        "interpreter, a headless grader and a VS Code extension.",
+        "English and Spanish."
+      ],
+      "site": "https://gh-jaider.github.io/karel/",
+      "demo": {
+        "url": "https://raw.githubusercontent.com/GH-Jaider/karel/HEAD/docs/learn.png",
+        "file": "docs/learn.png",
+        "size": "351K",
+        "caption": "chapter one: the lesson beside the world Karel has to cross"
+      }
+    },
+    {
+      "name": "splitify",
+      "repo": "GH-Jaider/splitify",
+      "lang": "TypeScript",
+      "stack": "TypeScript · VS Code API · Git",
+      "tagline": "AI-powered commit grouping for VS Code",
+      "lines": [
+        "Turn a messy working tree into clean, atomic commits: the AI",
+        "groups files by intent and writes messages in your project's",
+        "own style. Published on the VS Code Marketplace."
+      ],
+      "site": "https://marketplace.visualstudio.com/items?itemName=Oktuvida.splitify"
+    },
+    {
+      "name": "teletipo",
+      "repo": "GH-Jaider/teletipo",
+      "lang": "CSS",
+      "stack": "CSS tokens · TypeScript · zero dependencies",
+      "tagline": "a terminal UI style that happens to run in a browser",
+      "lines": [
+        "The design system shared by Collisions and Karel, extracted",
+        "so there is exactly one place a colour is written down.",
+        "Tokens, chrome and a theme runtime. No framework, no build."
+      ]
+    },
+    {
+      "name": "Collisions-Simulator",
+      "repo": "GH-Jaider/Collisions-Simulator",
+      "lang": "TypeScript",
+      "stack": "TypeScript · Canvas · teletipo",
+      "tagline": "a rigid-body physics lab dressed as a terminal",
+      "lines": [
+        "Not an animation of balls bouncing: an instrument. Set up",
+        "the experiment with real units, launch it, and the impact is",
+        "solved with the impulse equation using your own values."
+      ],
+      "site": "https://gh-jaider.github.io/Collisions-Simulator/",
+      "demo": {
+        "url": "https://raw.githubusercontent.com/GH-Jaider/Collisions-Simulator/HEAD/docs/collisions.png",
+        "file": "docs/collisions.png",
+        "size": "108K",
+        "caption": "the laboratory"
+      }
+    },
+    {
+      "name": "dcx",
+      "repo": "GH-Jaider/dcx",
+      "lang": "Go",
+      "stack": "Go · Bubble Tea · headless Chrome · ffmpeg",
+      "tagline": "TUI that exports .dc.html compositions to video, in parallel",
+      "lines": [
+        "Renders .dc.html compositions to video, frame by frame and",
+        "deterministic, several projects in parallel, ProRes by default.",
+        "Brings its own headless Chrome if you don't have one."
+      ],
+      "demo": {
+        "url": "https://raw.githubusercontent.com/GH-Jaider/dcx/HEAD/demo/dcx.gif",
+        "file": "demo/dcx.gif",
+        "size": "207K",
+        "caption": "three compositions exporting in parallel"
+      }
+    }
+  ]
 }
