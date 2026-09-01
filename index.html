@@ -28,6 +28,8 @@
      Latin subset does not carry them, and this way the ASCII art matches the README SVG exactly. */
   @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(assets/fonts/JetBrainsMono-Regular.subset.woff2) format('woff2'); unicode-range: U+2500-259F; }
   @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url(assets/fonts/JetBrainsMono-Bold.subset.woff2) format('woff2'); unicode-range: U+2500-259F; }
+  /* Braille for the fastfetch art: dots on a uniform 0.3em grid so rows tile at line-height 1.2 (scripts/braillefont.py). */
+  @font-face { font-family: 'Braille Grid'; font-style: normal; font-weight: 400; font-display: block; src: url(assets/fonts/BrailleGrid-Dots.woff2) format('woff2'); }
 
   :root {
     --bg:          #000000;
@@ -362,6 +364,11 @@
 
   /* ── inline images, the way kitty graphics show up in a terminal: no frame ── */
   .line img.demo { display: block; max-width: 100%; height: auto; margin: 6px 0 2px; }
+
+  /* ── fastfetch: art block beside the info column ── */
+  .ff { display: flex; align-items: flex-start; gap: 22px; }
+  .ff-art { margin: 0; font: inherit; font-family: 'Braille Grid', 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; white-space: pre; line-height: 1.2; }
+  .ff-info { white-space: pre; }
 
   /* ── tab-completion candidates, printed under the prompt like bash does ── */
   .line.candidates { color: var(--dim); padding: 0 2px 6px; }
@@ -1084,26 +1091,73 @@ const COMMANDS = {
 
   fastfetch: () => {
     // GEN:art — auto-generated from profile.json by scripts/generate.mjs; edit profile.json instead
-    const art = [
-      '                                   ▄▄▒▒▒▒▒▒▄▄               ',
-      '                                 ▄▒▒▒▒▒▒▒▒▒▒░▒▒▄▒▒▄         ',
-      '                                ▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░▄        ',
-      '                  ▄▄ ▄▄         ▒▒▒░░░▒▒▒▒▒▒▒▒▒▒▒▓▒▒        ',
-      '                  ▀▒▒▒▀        ▒▒▒▒▒░░▒▓▓▓▒▒▒▒▒▒▒▒▒▒▒       ',
-      '                   ▀▀          ▀▒▓▓▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▀     ',
-      '                                ▓▒░░░░░░░░▒▒▒▒▒▓▓▒▒▓▒▒      ',
-      '                                 ▓▒░▒░░░░░░▒▒▒▓▓▄▓▒▒▒▒      ',
-      '                                ▄▒▓▒▓▓▓▓▒▒▓▒▒▒▒▒▒▒▓▓▓▒▄     ',
-      '     ▄▄▄▄▄▄▄▄                   ▒▒▒▓▒▒▒▒▒▒▓▓▒▒▒▓▓▒▒▒▓▓▒     ',
-      '    ▀▀▀▒░░░░░░▄▄▄              ▄░▒▒▓▓▒▒▒▒▓▓▓▒▒▓▓▓▒▓▓▓▒▒▒    ',
-      ' ▄▒▄▒▒▒▒▒▒▒▒▒░░░░▒▒▄         ▄▒▒▒▒▒▓▓▓▒▒▒▒▓▓▓▓▓▓▒▒▓▓▓▒▒     ',
-      '▀▀▀▀▀▀▀▀▀▒░▀▒▒▒▒▒▒▒░▒▄      ▒░▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▓▓▒▒▄    ',
-      '            ▒▒▓▓▒▒▒▒▒▒▒▄  ▄░░░▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▓▓▒▓▓▒▒▒░▄   ',
-      '            ▓▒▒▓▒▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▓▒░░▒▒▒░░░░▓▒▒▒▒▒▒▒░░░▄  ',
-      '            ▒▒▓▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒  ',
-      '            ▒▒▓▓▓▒▒▓▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░▒▒▒▒▒▒▒▒▒░░▒ ',
-      '             ▀▒▒▒▒▒▒▓▒▒▒▒▒▓▒▒▒▒▒▒▒▒░░▒▒░░░░░░░░▒▒▒▒▓▒▒▒▒▒░░▒',
-    ];
+    const ART = {
+      "lineHeight": 1.2,
+      "palette": [
+        "#01d68a",
+        "#f87171",
+        "#f9a8d4",
+        "#38a9e0",
+        "#7dd3fc",
+        "#f5cdb3",
+        "#e4e6f2",
+        "#a9adc9",
+        "#d8d4c8",
+        "#9d9a90"
+      ],
+      "rows": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        " ⣠⣤⡀⣠⣤⡀                                ⢀⣠⣤⣤⣤⣄⣀⡀",
+        " ⠻⣿⣿⣿⡿⠃                             ⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄ ⣠⣤⡀",
+        "  ⠈⠻⠋                              ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣯⣻⣿⣿⣿⣿⣧⡹⣿⣿⡄",
+        "                                  ⢰⣿⣿⣿⣿⣿⣿⣿⣮⠽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄",
+        "                                  ⣾⣿⢥⣿⣿⣿⣿⣿⠛⣛⡛⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷",
+        "                                  ⣹⣿⡞⢛⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡤⣀",
+        "                                  ⠻⣷⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣛⣿⣿⣿⣿⣿⠋⠁",
+        "                                   ⢟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣫⣿⡯⣻⢫⣿⣿⣿⣿⡆",
+        "                                   ⢰⣜⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣭⣬⣯⣾⣸⣿⣿⣿⣷",
+        "                                   ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀",
+        "     ⢀⣤⣤⣤⣤⣶⣶⣶⣶⣤⡀                  ⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⡄",
+        "      ⠙⢉⢭⣽⣿⣿⣿⣿⣿⣿⣶⣶⣦⣄⣀            ⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷⡇",
+        " ⢀⣤⣿⣷⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀        ⢠⣾⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧",
+        " ⠈⠉⠉⠉⠉⠛⠛⠛⠛⠛⠻⠿⠛⣛⣿⣿⣿⣿⣿⣿⣿⣿⣦      ⣴⣿⣿⣾⣿⣿⣿⣿⢉⣡⣿⣿⣿⣿⣿⣿⣷⡤⣉⠛⠿⡟⢿⣿⣿⣿⣿⣿⣶⣄",
+        "              ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄ ⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣻⣿⣿⣿⣿⣿⣿⣿",
+        "              ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+        "              ⣿⣿⣿⣿⣿⢏⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣹⣿⣿⣿⣿",
+        "              ⢿⣿⣯⡻⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢿⣿⣿⣿⣿",
+        "               ⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿"
+      ],
+      "colors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ".222222................................66666666",
+        ".222222.............................66666666666666.666",
+        "..222..............................66665666666666666666",
+        "..................................6665555566666666667666",
+        "..................................6665555555556666677766",
+        "..................................6655555555556666655525555",
+        "..................................8755555555555667552255555",
+        "...................................77555555555565551577766",
+        "...................................86555555555554241477776",
+        "...................................644434444444444444444766",
+        ".....55555555555..................66444444444444444344444466",
+        "......555555555555558............866444444443444444444444666",
+        ".5555555555555555555888........8886664434444443333344444466",
+        ".85555555555555552228888......888666668833339998899334446688",
+        "..............977722788888.888888666668888888888888863366888",
+        "..............9777777998888888899666661888888888811866768888",
+        "..............9777779999889889999666668888888888881666668988",
+        "..............9997799999999899999666868888888888888666698998",
+        "...............999999999999999999666888888888888888666999898"
+      ]
+    };
     // GEN:art:end
     // GEN:info — auto-generated from profile.json by scripts/generate.mjs; edit profile.json instead
     const info = [
@@ -1142,13 +1196,33 @@ const COMMANDS = {
       }
       return right;
     };
+    // Art rows become colour runs, the way a terminal would print them with ANSI colours
+    const artRow = (row, colors) => {
+      let out = '';
+      for (let j = 0; j < row.length;) {
+        const c = colors[j] || '.';
+        let k = j;
+        while (k < row.length && (colors[k] || '.') === c) k++;
+        const chunk = esc(row.slice(j, k));
+        out += c === '.' ? chunk : `<span style="color:${ART.palette[parseInt(c, 16)]}">${chunk}</span>`;
+        j = k;
+      }
+      return out;
+    };
+    const cols = Math.max(...ART.rows.map((r) => r.length));
+    const artHtml = ART.rows.map((r, i) => artRow(r, ART.colors[i] || '')).join('\n');
+    const infoLines = info.map(infoHtml);
+    while (infoLines.length && !infoLines[infoLines.length - 1]) infoLines.pop();
     if (narrow()) {
-      // No room for the art beside the info on a phone: print the info alone, like `fastfetch --logo none`.
-      const lines = info.map((inf) => ({ type: 'fastfetch', art: '', infoHtml: infoHtml(inf) }));
-      while (lines.length && !lines[lines.length - 1].infoHtml) lines.pop();
-      return lines;
+      // On a phone the art is scaled to the width and the info goes underneath, like `fastfetch --logo-position top`.
+      const px = Math.max(6, Math.min(13, Math.floor(((terminal.clientWidth - 52) / (cols * 0.6)) * 10) / 10));
+      return [
+        { html: `<pre class="ff-art" style="font-size:${px}px;line-height:${ART.lineHeight}">${artHtml}</pre>` },
+        { text: '' },
+        ...infoLines.map((l) => ({ type: 'fastfetch', art: '', infoHtml: l })),
+      ];
     }
-    return art.map((a, i) => ({ type: 'fastfetch', art: a, infoHtml: infoHtml(info[i]) }));
+    return [{ html: `<div class="ff"><pre class="ff-art" style="line-height:${ART.lineHeight}">${artHtml}</pre><div class="ff-info">${infoLines.map((l) => l || ' ').join('\n')}</div></div>` }];
   },
 };
 COMMANDS.neofetch = COMMANDS.fastfetch;
