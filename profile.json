@@ -144,7 +144,7 @@
   "cta": {
     "command": "open interactive-terminal",
     "opening": "Opening gh-jaider.github.io/GH-Jaider …",
-    "hint": "→ or just click anywhere — this whole window is a link"
+    "hint": "→ or just click anywhere. This whole window is a link"
   },
   "projects": [
     {
