@@ -17,7 +17,10 @@ def build(style, path):
     fb.setupGlyphOrder(names)
     fb.setupCharacterMap({0x20: 'space', **{c: 'braille%04X' % c for c in range(0x2800, 0x2900)}})
     glyphs = {}
+    lsb = {}   # left side bearing = the outline's real xMin; a wrong one makes Chrome slide the glyph sideways
     for name in names:
+        lsb[name] = 0
+        xmin = None
         pen = TTGlyphPen(None)
         if name.startswith('braille'):
             code = int(name[7:], 16) - 0x2800
@@ -31,12 +34,15 @@ def build(style, path):
                 else:
                     hp = PITCH / 2
                     pts = [(cx - hp, cy - hp), (cx - hp, cy + hp), (cx + hp, cy + hp), (cx + hp, cy - hp)]
+                pts = [(round(px), round(py)) for px, py in pts]
+                xmin = min([px for px, _ in pts] + ([xmin] if xmin is not None else []))
                 pen.moveTo(pts[0])
                 for p in pts[1:]: pen.lineTo(p)
                 pen.closePath()
+        if xmin is not None: lsb[name] = xmin
         glyphs[name] = pen.glyph()
     fb.setupGlyf(glyphs)
-    fb.setupHorizontalMetrics({n: (ADV, 0) for n in names})
+    fb.setupHorizontalMetrics({n: (ADV, lsb[n]) for n in names})
     fb.setupHorizontalHeader(ascent=1000, descent=-200, lineGap=0)
     fb.setupNameTable({'familyName': 'Braille Grid', 'styleName': style.capitalize()})
     fb.setupOS2(sTypoAscender=1000, sTypoDescender=-200, sTypoLineGap=0, usWinAscent=1000, usWinDescent=200,
