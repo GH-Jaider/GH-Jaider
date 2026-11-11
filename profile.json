@@ -79,7 +79,7 @@
     },
     {
       "label": "OS",
-      "value": "Linux, Windows, MacOS (?)"
+      "value": "Linux, Windows, macOS (?)"
     },
     {
       "label": "Host",
@@ -166,6 +166,16 @@
         "file": "examples/showcase/showcase.gif",
         "size": "5.8M",
         "caption": "the showcase, a trailer shot entirely inside foley"
+      },
+      "es": {
+        "tagline": "demos de terminal renderizadas desde scripts .tape, sin capturar pantalla",
+        "lines": [
+          "Un artista foley recrea el sonido en el estudio. foley recrea",
+          "la terminal: un script .tape compatible con VHS maneja tu CLI",
+          "o TUI real sobre un pty, y cada frame lo dibuja el propio foley.",
+          "Tomas idénticas byte a byte en gif, mp4, webm, webp o asciicast."
+        ],
+        "caption": "el showcase, un tráiler grabado por completo dentro de foley"
       }
     },
     {
@@ -181,7 +191,16 @@
         "together. Draw something, publish it, fork other people's",
         "work and let the crowd decide if it is a masterpiece."
       ],
-      "site": "https://not-the-louvre.art/"
+      "site": "https://not-the-louvre.art/",
+      "es": {
+        "tagline": "un party game de arte comunitario: dibuja, publica, haz fork y que te juzguen",
+        "lines": [
+          "Un party game de arte comunitario que hice con mi amigo Oktuvida",
+          "para la hackathon midudev Cubepath 2026, y nuestro proyecto más",
+          "grande juntos. Dibuja algo, publícalo, haz fork del trabajo de",
+          "otros y deja que el público decida si es una obra maestra."
+        ]
+      }
     },
     {
       "name": "obon",
@@ -199,6 +218,15 @@
         "file": "assets/demo.gif",
         "size": "602K",
         "caption": "the lantern board"
+      },
+      "es": {
+        "tagline": "los dev servers que tus agentes dejaron en tus puertos, despedidos",
+        "lines": [
+          "Una TUI para los puertos de tu máquina: qué está escuchando, qué",
+          "agente lo arrancó, si es seguro matarlo, y una tecla para",
+          "despedirlo. El nombre viene de los faroles del tōrō nagashi."
+        ],
+        "caption": "el tablero de faroles"
       }
     },
     {
@@ -219,6 +247,16 @@
         "file": "docs/learn.png",
         "size": "351K",
         "caption": "chapter one: the lesson beside the world Karel has to cross"
+      },
+      "es": {
+        "tagline": "Karel el Robot: playground, intérprete, calificador y extensión de VS Code",
+        "lines": [
+          "Aprende y enseña Karel el Robot: once capítulos, quince mundos",
+          "y un sandbox en el navegador, un intérprete sin dependencias,",
+          "un calificador headless y una extensión de VS Code.",
+          "En inglés y en español."
+        ],
+        "caption": "capítulo uno: la lección junto al mundo que Karel debe cruzar"
       }
     },
     {
@@ -232,7 +270,16 @@
         "groups files by intent and writes messages in your project's",
         "own style. Published on the VS Code Marketplace."
       ],
-      "site": "https://marketplace.visualstudio.com/items?itemName=Oktuvida.splitify"
+      "site": "https://marketplace.visualstudio.com/items?itemName=Oktuvida.splitify",
+      "es": {
+        "tagline": "agrupación de commits con IA para VS Code",
+        "lines": [
+          "Convierte un working tree desordenado en commits limpios y",
+          "atómicos: la IA agrupa los archivos por intención y escribe",
+          "los mensajes con el estilo de tu proyecto.",
+          "Publicado en el VS Code Marketplace."
+        ]
+      }
     },
     {
       "name": "teletipo",
@@ -244,7 +291,15 @@
         "The design system shared by Collisions and Karel, extracted",
         "so there is exactly one place a colour is written down.",
         "Tokens, chrome and a theme runtime. No framework, no build."
-      ]
+      ],
+      "es": {
+        "tagline": "un estilo de UI de terminal que resulta que corre en un navegador",
+        "lines": [
+          "El sistema de diseño que comparten Collisions y Karel, extraído",
+          "para que haya exactamente un lugar donde se escribe un color.",
+          "Tokens, chrome y un runtime de temas. Sin framework, sin build."
+        ]
+      }
     },
     {
       "name": "Collisions-Simulator",
@@ -263,6 +318,15 @@
         "file": "docs/collisions.png",
         "size": "108K",
         "caption": "the laboratory"
+      },
+      "es": {
+        "tagline": "un laboratorio de física de cuerpos rígidos vestido de terminal",
+        "lines": [
+          "No es una animación de bolas rebotando: es un instrumento.",
+          "Monta el experimento con unidades reales, lánzalo, y el impacto",
+          "se resuelve con la ecuación de impulso usando tus propios valores."
+        ],
+        "caption": "el laboratorio"
       }
     },
     {
@@ -281,7 +345,27 @@
         "file": "demo/dcx.gif",
         "size": "207K",
         "caption": "three compositions exporting in parallel"
+      },
+      "es": {
+        "tagline": "TUI que exporta composiciones .dc.html a video, en paralelo",
+        "lines": [
+          "Renderiza composiciones .dc.html a video, frame a frame y de",
+          "forma determinista, varios proyectos en paralelo, ProRes por",
+          "defecto. Trae su propio Chrome headless si no tienes uno."
+        ],
+        "caption": "tres composiciones exportándose en paralelo"
       }
     }
-  ]
+  ],
+  "_heartComment": "artHeart marks the cells of the floating heart (rows and cols are inclusive ranges in the art grid) so the SVG and the page can drift it by one braille dot at a time.",
+  "artHeart": {
+    "rows": [
+      5,
+      7
+    ],
+    "cols": [
+      1,
+      6
+    ]
+  }
 }

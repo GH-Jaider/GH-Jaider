@@ -21,3 +21,7 @@ jaider@github:~$ ls ~/projects
 <p align="center">
   <a href="https://gh-jaider.github.io/GH-Jaider/"><b>▶ Open the interactive terminal</b></a>. It's a real one: type <code>help</code> or <a href="https://gh-jaider.github.io/GH-Jaider/#projects"><code>projects</code></a>
 </p>
+
+<p align="center">
+  Or keep it in your own terminal: <code>curl -sL gh-jaider.github.io/GH-Jaider/ff</code>
+</p>

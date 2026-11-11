@@ -51,11 +51,17 @@
     --block-bg:    #0a0a0a;
     --block-border:#1e1e1e;
     --input-bg:    #0d0d0d;
+    --page-bg:     #0a0a0a;
+    --frame:       #222222;
+    --note:        #946bbf;
+    --placeholder: #444444;
+    --pill-text:   #bbbbbb;
+    --hover:       rgba(255,255,255,0.07);
   }
 
   html, body {
     height: 100%;
-    background: #0a0a0a;
+    background: var(--page-bg);
     color: var(--text);
     font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
     font-size: 13px;
@@ -69,14 +75,14 @@
     justify-content: center;
     padding: 24px;
     min-height: 100vh;
-    background: #0a0a0a;
+    background: var(--page-bg);
   }
 
   .terminal {
     width: 100%;
     max-width: 900px;
     border-radius: 12px;
-    border: 1px solid #222222;
+    border: 1px solid var(--frame);
     overflow: hidden;
     box-shadow:
       0 0 0 1px rgba(255,255,255,0.02),
@@ -165,7 +171,7 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  .tab-btn:hover { background: rgba(255,255,255,0.06); }
+  .tab-btn:hover { background: var(--hover); }
   .tab-btn svg {
     width: 14px;
     height: 14px;
@@ -194,7 +200,7 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  .wctrl:hover { background: rgba(255,255,255,0.08); }
+  .wctrl:hover { background: var(--hover); }
   .wctrl.close:hover { background: #c42b1c; }
   .wctrl svg {
     width: 14px;
@@ -236,7 +242,7 @@
     transition: border-color 0.15s;
   }
   .command-block:hover {
-    border-color: #2a2a2a;
+    border-color: var(--border-light);
     border-left-color: var(--accent);
   }
   .command-block .block-prompt {
@@ -313,7 +319,7 @@
     border: 1px solid var(--border-light);
     border-radius: 5px;
     font-size: 12px;
-    color: #bbbbbb;
+    color: var(--pill-text);
     cursor: default;
   }
   .input-bar .path-pill svg {
@@ -352,7 +358,7 @@
     padding: 0;
   }
   #input::placeholder {
-    color: #444444;
+    color: var(--placeholder);
     font-style: normal;
   }
 
@@ -369,6 +375,18 @@
   .ff { display: flex; align-items: flex-start; gap: 22px; }
   .ff-art { margin: 0; font: inherit; font-family: 'Braille Grid', 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; white-space: pre; line-height: 1.2; }
   .ff-info { white-space: pre; }
+
+  /* ── directories in ls, coloured the way ls --color does ── */
+  .cmd-link.dir { color: var(--prompt); }
+
+  /* ── live blocks: the Karel world, the collisions canvas ── */
+  .line pre.live { margin: 0; font: inherit; white-space: pre; line-height: 1.25; overflow-x: auto; }
+  .line pre.live.braille { font-family: 'Braille Grid', 'JetBrains Mono', monospace; line-height: 1.2; }
+
+  /* ── the heart in the fastfetch art drifts one braille dot at a time ── */
+  .ff-heart { display: inline-block; animation: heartbob 4s step-end infinite; }
+  @keyframes heartbob { 0%, 100% { transform: translateY(0); } 25%, 75% { transform: translateY(-0.3em); } 50% { transform: translateY(-0.6em); } }
+  @media (prefers-reduced-motion: reduce) { .ff-heart { animation: none; } }
 
   /* ── tab-completion candidates, printed under the prompt like bash does ── */
   .line.candidates { color: var(--dim); padding: 0 2px 6px; }
@@ -426,7 +444,7 @@
           <line x1="2" y1="6.5" x2="14" y2="6.5" />
           <text x="8" y="12" text-anchor="middle" font-size="5" fill="#999" stroke="none" font-family="monospace">_</text>
         </svg>
-        <span class="tab-title">jaider@github:~</span>
+        <span class="tab-title" id="tab-title">jaider@github:~</span>
       </div>
       <div class="tab-actions">
         <!-- New tab + -->
@@ -481,7 +499,7 @@
         <svg viewBox="0 0 16 16">
           <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 4.5H12.5C13.33 4.5 14 5.17 14 6V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" />
         </svg>
-        <span>~</span>
+        <span id="cwd">~</span>
       </div>
     </div>
     <div class="input-area">
@@ -516,6 +534,16 @@ const PROJECTS = [
       "file": "examples/showcase/showcase.gif",
       "size": "5.8M",
       "caption": "the showcase, a trailer shot entirely inside foley"
+    },
+    "es": {
+      "tagline": "demos de terminal renderizadas desde scripts .tape, sin capturar pantalla",
+      "lines": [
+        "Un artista foley recrea el sonido en el estudio. foley recrea",
+        "la terminal: un script .tape compatible con VHS maneja tu CLI",
+        "o TUI real sobre un pty, y cada frame lo dibuja el propio foley.",
+        "Tomas idénticas byte a byte en gif, mp4, webm, webp o asciicast."
+      ],
+      "caption": "el showcase, un tráiler grabado por completo dentro de foley"
     }
   },
   {
@@ -531,7 +559,16 @@ const PROJECTS = [
       "together. Draw something, publish it, fork other people's",
       "work and let the crowd decide if it is a masterpiece."
     ],
-    "site": "https://not-the-louvre.art/"
+    "site": "https://not-the-louvre.art/",
+    "es": {
+      "tagline": "un party game de arte comunitario: dibuja, publica, haz fork y que te juzguen",
+      "lines": [
+        "Un party game de arte comunitario que hice con mi amigo Oktuvida",
+        "para la hackathon midudev Cubepath 2026, y nuestro proyecto más",
+        "grande juntos. Dibuja algo, publícalo, haz fork del trabajo de",
+        "otros y deja que el público decida si es una obra maestra."
+      ]
+    }
   },
   {
     "name": "obon",
@@ -549,6 +586,15 @@ const PROJECTS = [
       "file": "assets/demo.gif",
       "size": "602K",
       "caption": "the lantern board"
+    },
+    "es": {
+      "tagline": "los dev servers que tus agentes dejaron en tus puertos, despedidos",
+      "lines": [
+        "Una TUI para los puertos de tu máquina: qué está escuchando, qué",
+        "agente lo arrancó, si es seguro matarlo, y una tecla para",
+        "despedirlo. El nombre viene de los faroles del tōrō nagashi."
+      ],
+      "caption": "el tablero de faroles"
     }
   },
   {
@@ -569,6 +615,16 @@ const PROJECTS = [
       "file": "docs/learn.png",
       "size": "351K",
       "caption": "chapter one: the lesson beside the world Karel has to cross"
+    },
+    "es": {
+      "tagline": "Karel el Robot: playground, intérprete, calificador y extensión de VS Code",
+      "lines": [
+        "Aprende y enseña Karel el Robot: once capítulos, quince mundos",
+        "y un sandbox en el navegador, un intérprete sin dependencias,",
+        "un calificador headless y una extensión de VS Code.",
+        "En inglés y en español."
+      ],
+      "caption": "capítulo uno: la lección junto al mundo que Karel debe cruzar"
     }
   },
   {
@@ -582,7 +638,16 @@ const PROJECTS = [
       "groups files by intent and writes messages in your project's",
       "own style. Published on the VS Code Marketplace."
     ],
-    "site": "https://marketplace.visualstudio.com/items?itemName=Oktuvida.splitify"
+    "site": "https://marketplace.visualstudio.com/items?itemName=Oktuvida.splitify",
+    "es": {
+      "tagline": "agrupación de commits con IA para VS Code",
+      "lines": [
+        "Convierte un working tree desordenado en commits limpios y",
+        "atómicos: la IA agrupa los archivos por intención y escribe",
+        "los mensajes con el estilo de tu proyecto.",
+        "Publicado en el VS Code Marketplace."
+      ]
+    }
   },
   {
     "name": "teletipo",
@@ -594,7 +659,15 @@ const PROJECTS = [
       "The design system shared by Collisions and Karel, extracted",
       "so there is exactly one place a colour is written down.",
       "Tokens, chrome and a theme runtime. No framework, no build."
-    ]
+    ],
+    "es": {
+      "tagline": "un estilo de UI de terminal que resulta que corre en un navegador",
+      "lines": [
+        "El sistema de diseño que comparten Collisions y Karel, extraído",
+        "para que haya exactamente un lugar donde se escribe un color.",
+        "Tokens, chrome y un runtime de temas. Sin framework, sin build."
+      ]
+    }
   },
   {
     "name": "Collisions-Simulator",
@@ -613,6 +686,15 @@ const PROJECTS = [
       "file": "docs/collisions.png",
       "size": "108K",
       "caption": "the laboratory"
+    },
+    "es": {
+      "tagline": "un laboratorio de física de cuerpos rígidos vestido de terminal",
+      "lines": [
+        "No es una animación de bolas rebotando: es un instrumento.",
+        "Monta el experimento con unidades reales, lánzalo, y el impacto",
+        "se resuelve con la ecuación de impulso usando tus propios valores."
+      ],
+      "caption": "el laboratorio"
     }
   },
   {
@@ -631,6 +713,15 @@ const PROJECTS = [
       "file": "demo/dcx.gif",
       "size": "207K",
       "caption": "three compositions exporting in parallel"
+    },
+    "es": {
+      "tagline": "TUI que exporta composiciones .dc.html a video, en paralelo",
+      "lines": [
+        "Renderiza composiciones .dc.html a video, frame a frame y de",
+        "forma determinista, varios proyectos en paralelo, ProRes por",
+        "defecto. Trae su propio Chrome headless si no tienes uno."
+      ],
+      "caption": "tres composiciones exportándose en paralelo"
     }
   }
 ];
@@ -639,6 +730,15 @@ const PROJECTS = [
 // GEN:repos: snapshot of the public repositories taken by scripts/generate.mjs; live data replaces it when GitHub's API allows
 const REPOS_AT = '2026-11-11';
 const REPOS = [
+  {
+    "name": "GH-Jaider",
+    "description": "My GitHub profile: a terminal you can actually type in",
+    "stars": 0,
+    "lang": "HTML",
+    "pushed": "2026-11-11",
+    "url": "https://github.com/GH-Jaider/GH-Jaider",
+    "homepage": "https://gh-jaider.github.io/GH-Jaider/"
+  },
   {
     "name": "werlyb-otp",
     "description": "Web fan de «Siendo OTP por un día» de Werlyb: episodios, coaches, stats y VODs de la serie",
@@ -701,15 +801,6 @@ const REPOS = [
     "pushed": "2026-09-17",
     "url": "https://github.com/GH-Jaider/foley",
     "homepage": "https://gh-jaider.github.io/foley/"
-  },
-  {
-    "name": "GH-Jaider",
-    "description": "My GitHub profile: a terminal you can actually type in",
-    "stars": 0,
-    "lang": "HTML",
-    "pushed": "2026-09-01",
-    "url": "https://github.com/GH-Jaider/GH-Jaider",
-    "homepage": "https://gh-jaider.github.io/GH-Jaider/"
   },
   {
     "name": "karel",
@@ -866,43 +957,156 @@ async function refreshRepos() {
   await Promise.race([live, timeout]);
 }
 
-const HELP = [
-  ['whoami',     'Who am I?'],
-  ['skills',     'Languages, frameworks & tools'],
-  ['experience', 'Work history'],
-  ['education',  'Academic background'],
-  ['projects',   'Selected projects'],
-  ['demo',       'Play a project demo inline'],
-  ['repos',      'Public repositories'],
-  ['git log',    'Recently pushed'],
-  ['open',       'Open a project on GitHub'],
-  ['contact',    'Get in touch'],
-  ['tools',      'Dev environment & workflow'],
-  ['languages',  'Spoken languages'],
-  ['fastfetch',  'System info'],
-  ['clear',      'Clear the terminal'],
-  ['help',       'Show this message'],
-  ['exit',       'Back to GitHub profile'],
+// ── language: LANG=es_CO switches the whole terminal, the way a locale would ──
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+let es = store.get('gh-jaider.lang') === 'es';
+const L = (en, esText) => (es ? esText : en);
+const pl = (p, key) => (es && p.es && p.es[key]) || p[key];
+const demoCaption = (p) => (es && p.es && p.es.caption) || p.demo.caption;
+
+const HELP_NAMES = ['whoami', 'skills', 'experience', 'education', 'projects', 'demo', 'repos', 'git log', 'open', 'contact', 'tools', 'languages', 'fastfetch', 'clear', 'help', 'exit'];
+const HELP = () => [
+  ['whoami',     L('Who am I?', '¿Quién soy?')],
+  ['skills',     L('Languages, frameworks & tools', 'Lenguajes, frameworks y herramientas')],
+  ['experience', L('Work history', 'Experiencia laboral')],
+  ['education',  L('Academic background', 'Formación académica')],
+  ['projects',   L('Selected projects', 'Proyectos seleccionados')],
+  ['demo',       L('Play a project demo inline', 'Reproduce la demo de un proyecto aquí mismo')],
+  ['repos',      L('Public repositories', 'Repositorios públicos')],
+  ['git log',    L('Recently pushed', 'Lo último que subí')],
+  ['open',       L('Open a project on GitHub', 'Abre un proyecto en GitHub')],
+  ['contact',    L('Get in touch', 'Hablemos')],
+  ['tools',      L('Dev environment & workflow', 'Entorno de desarrollo y flujo de trabajo')],
+  ['languages',  L('Spoken languages', 'Idiomas')],
+  ['fastfetch',  L('System info', 'Información del sistema')],
+  ['clear',      L('Clear the terminal', 'Limpia la terminal')],
+  ['help',       L('Show this message', 'Muestra este mensaje')],
+  ['exit',       L('Back to GitHub profile', 'Vuelve al perfil de GitHub')],
+];
+const EXTRA_NAMES = ['ls', 'cd', 'cat', 'pwd', 'history', 'man', 'theme', 'karel', 'collisions', 'neofetch', 'recent', 'echo', 'date', 'curl', 'locale', 'sudo'];
+
+const STATS = () => [
+  [L('Learning Speed', 'Velocidad de aprendizaje'),      20, L('fast', 'rápida')],
+  [L('Problem Solving', 'Resolver problemas'),           20, L('solid', 'sólido')],
+  [L('Reading the Docs', 'Leer la documentación'),       18, L('willing', 'con gusto')],
+  [L('Overengineering', 'Sobreingeniería'),               8, L('avoided', 'evitada')],
+  [L('Common Sense', 'Sentido común'),                   20, L('mandatory', 'obligatorio')],
+  [L('Attention to Detail', 'Atención al detalle'),      18, L('sharp', 'afilada')],
+  [L('Debugging Tenacity', 'Terquedad al depurar'),      20, L('relentless', 'implacable')],
+  [L('Framework Loyalty', 'Lealtad a un framework'),      2, L('low', 'baja')],
 ];
 
-const STATS = [
-  ['Learning Speed',      20, 'fast'],
-  ['Problem Solving',     20, 'solid'],
-  ['Reading the Docs',    18, 'willing'],
-  ['Overengineering',      8, 'avoided'],
-  ['Common Sense',        20, 'mandatory'],
-  ['Attention to Detail', 18, 'sharp'],
-  ['Debugging Tenacity',  20, 'relentless'],
-  ['Framework Loyalty',    2, 'low'],
-];
+// ── a small filesystem: ~ holds bin/ (the commands) and projects/ (one directory per project) ──
+const HOME = '/home/jaider';
+let cwd = [];
+let promptCwd = '~';            // where the command being printed was typed
+let prevCwd = [];
+const cwdLabel = (segs = cwd) => '~' + segs.map((s) => '/' + s).join('');
+const binNames = () => [...new Set(HELP_NAMES.concat(EXTRA_NAMES).map((n) => n.split(' ')[0]))].sort();
+const projectFiles = (p) => ['README.md'].concat(p.demo ? [p.demo.file.split('/').pop()] : []);
+
+function resolvePath(str) {
+  let s = (str || '').trim();
+  let segs;
+  if (s === HOME || s.startsWith(HOME + '/')) s = '~' + s.slice(HOME.length);
+  if (s.startsWith('~')) { segs = []; s = s.slice(1); }
+  else if (s.startsWith('/')) return null;
+  else segs = [...cwd];
+  for (const part of s.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') { segs.pop(); continue; }
+    segs.push(part);
+  }
+  if (!segs.length) return { kind: 'home', segs };
+  const [a, b, c] = segs;
+  if (a === 'bin') {
+    if (segs.length === 1) return { kind: 'bin', segs };
+    if (segs.length === 2 && binNames().includes(b)) return { kind: 'cmd', segs, cmd: b };
+    return null;
+  }
+  if (a !== 'projects') return null;
+  if (segs.length === 1) return { kind: 'projects', segs };
+  const p = PROJECTS.find((x) => x.name.toLowerCase() === b.toLowerCase());
+  if (!p) return null;
+  const canon = ['projects', p.name];
+  if (segs.length === 2) return { kind: 'project', segs: canon, project: p };
+  const f = projectFiles(p).find((x) => x.toLowerCase() === c.toLowerCase());
+  if (segs.length === 3 && f) return { kind: 'file', segs: [...canon, f], project: p, file: f };
+  return null;
+}
+const isDir = (node) => node && ['home', 'bin', 'projects', 'project'].includes(node.kind);
+function listDir(node) {
+  if (node.kind === 'home') return [{ name: 'bin', dir: true }, { name: 'projects', dir: true }];
+  if (node.kind === 'bin') return binNames().map((name) => ({ name }));
+  if (node.kind === 'projects') return PROJECTS.map((p) => ({ name: p.name, dir: true }));
+  if (node.kind === 'project') return projectFiles(node.project).map((name) => ({ name }));
+  return [];
+}
+// The project the visitor is standing in, if any: `open`, `demo` and `projects` default to it.
+const hereProject = () => (cwd[0] === 'projects' && cwd[1] ? PROJECTS.find((p) => p.name === cwd[1]) : null);
+
+// ── cat README.md: the real file, straight from the repository ──
+const readmeCache = new Map();
+function mdToLines(md) {
+  const out = [];
+  let fence = false;
+  const text = md.replace(/<!--[\s\S]*?-->/g, '').replace(/<\/?[a-zA-Z][^>]*>/g, '');
+  for (const raw of text.split('\n')) {
+    if (/^\s*```/.test(raw)) { fence = !fence; continue; }
+    if (fence) { out.push({ type: 'dim', text: '    ' + raw }); continue; }
+    const s = raw
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/(\*\*|__)(.*?)\1/g, '$2')
+      .replace(/`([^`]+)`/g, '$1')
+      .trimEnd();
+    if (!s.trim()) {
+      if (out.length && out[out.length - 1].text !== '') out.push({ text: '' });
+      continue;
+    }
+    const h = s.match(/^#{1,6}\s+(.*)/);
+    out.push(h ? { type: 'heading', text: h[1] } : { text: s });
+  }
+  while (out.length && out[out.length - 1].text === '') out.pop();
+  return out;
+}
+async function catReadme(p) {
+  const url = `https://raw.githubusercontent.com/${p.repo}/HEAD/README.md`;
+  try {
+    if (!readmeCache.has(p.repo)) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      readmeCache.set(p.repo, mdToLines(await res.text()));
+    }
+  } catch (e) {
+    return [
+      { type: 'error', text: `cat: README.md: ${L('could not be read from GitHub', 'no se pudo leer desde GitHub')} (${e.message})` },
+      { type: 'link', text: `  → https://github.com/${p.repo}#readme` },
+    ];
+  }
+  const all = readmeCache.get(p.repo);
+  const max = 40;
+  const lines = all.slice(0, max);
+  if (all.length > max) {
+    lines.push({ text: '' });
+    lines.push({ type: 'dim', text: L(`  … ${all.length - max} more lines`, `  … ${all.length - max} líneas más`) });
+  }
+  lines.push({ type: 'link', text: `  → https://github.com/${p.repo}#readme` });
+  return lines;
+}
 
 function projectCard(p) {
   const stars = starsOf(p);
   const lines = [];
   lines.push({ type: 'heading', text: p.name + (stars ? `  ★ ${stars}` : '') });
-  const credit = p.with ? `  ·  with ${extLink('https://github.com/' + p.with, '@' + p.with)}` : '';
+  const credit = p.with ? `  ·  ${L('with', 'con')} ${extLink('https://github.com/' + p.with, '@' + p.with)}` : '';
   lines.push({ html: dim(esc(p.stack)) + credit });
-  for (const l of p.lines) lines.push({ text: '  ' + l });
+  for (const l of pl(p, 'lines')) lines.push({ text: '  ' + l });
   if (p.install) lines.push({ type: 'dim', text: '  $ ' + p.install });
   lines.push({ type: 'link', text: '  → https://github.com/' + p.repo });
   if (p.site) lines.push({ type: 'link', text: '  → ' + p.site });
@@ -912,19 +1116,293 @@ function projectCard(p) {
   return lines;
 }
 
+// ── theme: the palettes are teletipo's, read from its themes.css so a colour is still written in one place ──
+const THEMES_URL = 'https://raw.githubusercontent.com/GH-Jaider/teletipo/HEAD/css/themes.css';
+const THEME_NAMES = ['warp', 'charm', 'matte', 'ember', 'paper'];
+const THEME_MAP = {
+  '--page-bg': 'bg', '--bg': 'bg', '--surface': 'bg', '--header-bg': 'bg-panel', '--tab-bg': 'bg-raised', '--tab-active': 'bg-raised',
+  '--border': 'line', '--border-light': 'line-bright', '--frame': 'line', '--text': 'text', '--dim': 'text-dim',
+  '--prompt': 'cyan', '--accent': 'pink', '--warn': 'amber', '--error': 'red', '--link': 'blue',
+  '--icon': 'text-dim', '--icon-bright': 'text', '--block-bg': 'bg-panel', '--block-border': 'line', '--input-bg': 'bg-panel',
+  '--note': 'purple', '--placeholder': 'text-faint', '--pill-text': 'text-dim', '--hover': 'bg-raised',
+};
+let themesCss = null;
+function applyTheme(vars) {
+  const style = document.documentElement.style;
+  for (const k of Object.keys(THEME_MAP)) {
+    if (vars && vars[k]) style.setProperty(k, vars[k]); else style.removeProperty(k);
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', (vars && vars['--bg']) || '#000000');
+}
+function parseTheme(css, name) {
+  const open = name === 'charm' ? css.indexOf(':root {') : css.indexOf(`[data-theme="${name}"] {`);
+  if (open < 0) return null;
+  const block = css.slice(open, css.indexOf('\n}', open));
+  const tokens = {};
+  for (const m of block.matchAll(/--([a-z-]+):\s*(#[0-9a-fA-F]{3,8})\s*;/g)) tokens[m[1]] = m[2];
+  const vars = {};
+  for (const [k, token] of Object.entries(THEME_MAP)) {
+    if (!tokens[token]) return null;
+    vars[k] = tokens[token];
+  }
+  return vars;
+}
+
+// ── karel: the real interpreter from GH-Jaider/karel (packages/core, zero dependencies), loaded on demand ──
+const KAREL_MAP = {
+  dimensions: { width: 9, height: 5 },
+  karel: { x: 1, y: 1, facing: 'east', beepers: 0 },
+  beepers: [
+    { x: 3, y: 1, count: 1 }, { x: 6, y: 1, count: 2 }, { x: 4, y: 2, count: 1 }, { x: 8, y: 2, count: 1 },
+    { x: 2, y: 3, count: 1 }, { x: 5, y: 3, count: 3 }, { x: 9, y: 3, count: 1 }, { x: 7, y: 4, count: 1 },
+    { x: 1, y: 5, count: 1 }, { x: 4, y: 5, count: 1 },
+  ],
+  walls: [
+    { from: { x: 5, y: 1 }, to: { x: 5, y: 2 } }, { from: { x: 6, y: 1 }, to: { x: 6, y: 2 } },
+    { from: { x: 3, y: 3 }, to: { x: 3, y: 4 } }, { from: { x: 4, y: 3 }, to: { x: 4, y: 4 } },
+  ],
+};
+const KAREL_SRC = `BEGINNING-OF-PROGRAM
+  DEFINE-NEW-INSTRUCTION turnright AS
+  BEGIN
+    turnleft; turnleft; turnleft
+  END
+  DEFINE-NEW-INSTRUCTION harvest AS
+  BEGIN
+    WHILE next-to-a-beeper DO
+    BEGIN
+      pickbeeper
+    END
+  END
+  DEFINE-NEW-INSTRUCTION next-row AS
+  BEGIN
+    IF facing-east THEN
+    BEGIN
+      turnleft; move; turnleft
+    END
+    ELSE
+    BEGIN
+      turnright; move; turnright
+    END
+  END
+  DEFINE-NEW-INSTRUCTION sweep AS
+  BEGIN
+    harvest;
+    WHILE front-is-clear DO
+    BEGIN
+      move;
+      harvest
+    END
+  END
+  BEGINNING-OF-EXECUTION
+    ITERATE 4 TIMES
+    BEGIN
+      sweep;
+      next-row
+    END
+    sweep;
+    turnoff
+  END-OF-EXECUTION
+END-OF-PROGRAM`;
+const KAREL_STEPS = { move: 'move', turnleft: 'turnLeft', pickbeeper: 'pickBeeper', putbeeper: 'putBeeper' };
+let karelMod = null;
+let karelWorld = null;
+async function karelLoad() {
+  if (!karelMod) karelMod = await import('./assets/karel-core.js');
+  karelMod.setLocale(es ? 'es' : 'en');
+  if (!karelWorld) karelWorld = new karelMod.World(KAREL_MAP);
+  return karelMod;
+}
+// The world as text: one cell every four columns, walls drawn where they block a move.
+function karelDraw(world, note) {
+  const { width: w, height: h } = world.dimensions;
+  const k = world.karel;
+  const arrow = { north: '^', east: '>', south: 'v', west: '<' }[k.facing];
+  const rows = ['  ' + dim('┌' + '─'.repeat(4 * w - 1) + '┐')];
+  for (let y = h; y >= 1; y--) {
+    let row = '  ' + dim('│');
+    for (let x = 1; x <= w; x++) {
+      const n = world.getBeepers({ x, y });
+      let cell;
+      if (k.x === x && k.y === y) cell = `<span style="color:var(--accent);font-weight:700">${esc(arrow)}</span>`;
+      else if (n) cell = `<span style="color:var(--warn)">${n > 9 ? '+' : n}</span>`;
+      else cell = dim('·');
+      row += ' ' + cell + ' ';
+      if (x < w) row += world.hasWall({ x, y }, { x: x + 1, y }) ? dim('│') : ' ';
+    }
+    rows.push(row + dim('│'));
+    if (y > 1) {
+      let gap = '  ' + dim('│');
+      for (let x = 1; x <= w; x++) {
+        gap += world.hasWall({ x, y }, { x, y: y - 1 }) ? dim('───') : '   ';
+        if (x < w) gap += ' ';
+      }
+      rows.push(gap + dim('│'));
+    }
+  }
+  rows.push('  ' + dim('└' + '─'.repeat(4 * w - 1) + '┘'));
+  const left = world.getAllBeepers().reduce((s, b) => s + b.count, 0);
+  const facing = es ? { north: 'norte', east: 'este', south: 'sur', west: 'oeste' }[k.facing] : k.facing;
+  rows.push('  ' + dim(L(`(${k.x}, ${k.y}) facing ${facing} · bag ${k.beepersInBag} · on the floor ${left}`, `(${k.x}, ${k.y}) mirando al ${facing} · bolsa ${k.beepersInBag} · en el piso ${left}`)));
+  rows.push('  ' + (note || ' '));
+  return `<pre class="live">${rows.join('\n')}</pre>`;
+}
+
+// Phones have no Ctrl+C, so a tap stops a live block there
+const stopHint = () => (narrow() ? L('tap to stop', 'toca para detener') : L('Ctrl+C stops it', 'Ctrl+C lo detiene'));
+
+// ── collisions: rigid discs on a braille canvas, impacts solved with the impulse equation ──
+const BRAILLE_BITS = [[0x01, 0x08], [0x02, 0x10], [0x04, 0x20], [0x40, 0x80]];
+const BODY_COLORS = ['var(--accent)', 'var(--prompt)', 'var(--warn)', 'var(--link)', 'var(--error)', 'var(--note)'];
+function collisionsWorld(n, W, H) {
+  const bodies = [];
+  let guard = 0;
+  while (bodies.length < n && guard++ < 2000) {
+    const r = 2.5 + Math.random() * 3.5;
+    const b = {
+      r, m: +(r * r / 10).toFixed(2),
+      x: r + 1 + Math.random() * (W - 2 * r - 2), y: r + 1 + Math.random() * (H - 2 * r - 2),
+      vx: (Math.random() < 0.5 ? -1 : 1) * (18 + Math.random() * 30), vy: (Math.random() < 0.5 ? -1 : 1) * (10 + Math.random() * 22),
+      color: BODY_COLORS[bodies.length % BODY_COLORS.length],
+    };
+    if (bodies.every((o) => Math.hypot(o.x - b.x, o.y - b.y) > o.r + b.r + 1)) bodies.push(b);
+  }
+  return bodies;
+}
+function collisionsStep(bodies, W, H, dt) {
+  let impacts = 0;
+  for (const b of bodies) {
+    b.x += b.vx * dt; b.y += b.vy * dt;
+    if (b.x < b.r + 1) { b.x = b.r + 1; b.vx = Math.abs(b.vx); }
+    if (b.x > W - b.r - 2) { b.x = W - b.r - 2; b.vx = -Math.abs(b.vx); }
+    if (b.y < b.r + 1) { b.y = b.r + 1; b.vy = Math.abs(b.vy); }
+    if (b.y > H - b.r - 2) { b.y = H - b.r - 2; b.vy = -Math.abs(b.vy); }
+  }
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = i + 1; j < bodies.length; j++) {
+      const a = bodies[i], b = bodies[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const d = Math.hypot(dx, dy) || 1e-6;
+      if (d >= a.r + b.r) continue;
+      const nx = dx / d, ny = dy / d;
+      const vn = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+      if (vn < 0) {
+        // j = -(1 + e) (v_rel · n) / (1/m1 + 1/m2), with e = 1: perfectly elastic
+        const jImp = (-2 * vn) / (1 / a.m + 1 / b.m);
+        a.vx -= (jImp / a.m) * nx; a.vy -= (jImp / a.m) * ny;
+        b.vx += (jImp / b.m) * nx; b.vy += (jImp / b.m) * ny;
+        impacts++;
+      }
+      const push = (a.r + b.r - d) / 2;
+      a.x -= nx * push; a.y -= ny * push;
+      b.x += nx * push; b.y += ny * push;
+    }
+  }
+  return impacts;
+}
+function collisionsDraw(bodies, cols, rows) {
+  const W = cols * 2, H = rows * 4;
+  const bits = new Uint8Array(cols * rows);
+  const owner = new Int8Array(cols * rows).fill(-1);
+  const dot = (x, y, who) => {
+    if (x < 0 || y < 0 || x >= W || y >= H) return;
+    const c = (y >> 2) * cols + (x >> 1);
+    bits[c] |= BRAILLE_BITS[y & 3][x & 1];
+    if (who >= 0) owner[c] = who;
+  };
+  for (let x = 0; x < W; x++) { dot(x, 0, -1); dot(x, H - 1, -1); }
+  for (let y = 0; y < H; y++) { dot(0, y, -1); dot(W - 1, y, -1); }
+  bodies.forEach((b, i) => {
+    for (let y = Math.floor(b.y - b.r); y <= Math.ceil(b.y + b.r); y++) {
+      for (let x = Math.floor(b.x - b.r); x <= Math.ceil(b.x + b.r); x++) {
+        if ((x - b.x) ** 2 + (y - b.y) ** 2 <= b.r * b.r) dot(x, y, i);
+      }
+    }
+  });
+  let html = '';
+  for (let r = 0; r < rows; r++) {
+    let run = '', runOwner = -2;
+    const flush = () => {
+      if (!run) return;
+      html += `<span style="color:${runOwner >= 0 ? bodies[runOwner].color : 'var(--dim)'}">${run}</span>`;
+      run = '';
+    };
+    for (let c = 0; c < cols; c++) {
+      const o = owner[r * cols + c];
+      if (o !== runOwner) { flush(); runOwner = o; }
+      // An empty cell is a space, as in the fastfetch art: the blank braille glyph is not in the art font
+      run += bits[r * cols + c] ? String.fromCharCode(0x2800 + bits[r * cols + c]) : ' ';
+    }
+    flush();
+    if (r < rows - 1) html += '\n';
+  }
+  return html;
+}
+
 const COMMANDS = {
   help: () => {
-    const w = Math.max(...HELP.map(([n]) => n.length)) + 3;
+    const rows = HELP();
+    const w = Math.max(...rows.map(([n]) => n.length)) + 3;
+    const list = (cmds) => cmds.map((c) => cmdLink(c)).join(dim(' · '));
     return [
-      { type: 'heading', text: 'Available commands:' },
+      { type: 'heading', text: L('Available commands:', 'Comandos disponibles:') },
       { text: '' },
-      ...HELP.map(([name, desc]) => ({ html: '  ' + cmdLink(name) + ' '.repeat(w - name.length) + esc(desc) })),
+      ...rows.map(([name, desc]) => ({ html: '  ' + cmdLink(name) + ' '.repeat(w - name.length) + esc(desc) })),
       { text: '' },
-      { html: dim('  // names are clickable · most take an argument: ') + cmdLink('projects foley') + dim(', ') + cmdLink('demo obon') + dim(', ') + cmdLink('open karel') },
+      { html: dim(L('  // names are clickable · most take an argument: ', '  // los nombres son clicables · casi todos reciben un argumento: ')) + list(['projects foley', 'demo obon', 'open karel']) },
+      { html: dim(L('  // it is also a shell: ', '  // también es una shell: ')) + list(['ls', 'cd projects', 'history', 'man jaider', 'theme', es ? 'LANG=en_US' : 'LANG=es_CO']) },
+      { html: dim(L('  // and my projects run in here: ', '  // y mis proyectos corren aquí adentro: ')) + list(['karel', 'collisions']) },
     ];
   },
 
-  ls: () => [{ html: '  ' + HELP.map(([n]) => cmdLink(n)).join('  ') }],
+  ls: (args) => {
+    const target = args.filter((a) => !a.startsWith('-'))[0] || '';
+    const node = resolvePath(target);
+    if (!node) return [{ type: 'error', text: `ls: ${target}: ${L('No such file or directory', 'No existe el archivo o el directorio')}` }];
+    const path = cwdLabel(node.segs);
+    const dirLink = (to, label) => `<span class="cmd-link dir" data-cmd="${esc('ls ' + to)}">${esc(label)}</span>`;
+    if (node.kind === 'home') return [{ html: '  ' + dirLink('~/bin', 'bin/') + '  ' + dirLink('~/projects', 'projects/') }];
+    if (node.kind === 'bin') return [{ html: '  ' + binNames().map((n) => cmdLink(n)).join('  ') }];
+    if (node.kind === 'projects') {
+      if (narrow()) return PROJECTS.map((p) => ({ html: '  ' + dirLink(path + '/' + p.name, p.name + '/') + '  ' + dim(esc(p.lang)) }));
+      const nameW = Math.max(...PROJECTS.map((p) => p.name.length + 1)) + 2;
+      const langW = Math.max(...PROJECTS.map((p) => p.lang.length)) + 2;
+      return PROJECTS.map((p) => ({
+        html: '  ' + dirLink(path + '/' + p.name, p.name + '/') + ' '.repeat(nameW - p.name.length - 1) + dim(esc(pad(p.lang, langW))) + esc(pl(p, 'tagline')),
+      }));
+    }
+    if (node.kind === 'project') {
+      return [{ html: '  ' + projectFiles(node.project).map((f) => cmdLink('cat ' + path + '/' + f, f)).join('  ') }];
+    }
+    return [{ text: '  ' + node.segs[node.segs.length - 1] }];
+  },
+
+  cd: (args) => {
+    const target = args[0] || '~';
+    const node = target === '-' ? { kind: 'home', segs: prevCwd } : resolvePath(target);
+    if (!node) return [{ type: 'error', text: `cd: ${L('no such file or directory', 'no existe el archivo o el directorio')}: ${target}` }];
+    if (!isDir(node) && target !== '-') return [{ type: 'error', text: `cd: ${L('not a directory', 'no es un directorio')}: ${target}` }];
+    prevCwd = cwd;
+    cwd = node.segs;
+    syncCwd();
+    return [];
+  },
+
+  pwd: () => [{ text: HOME + cwd.map((s) => '/' + s).join('') }],
+
+  cat: (args) => {
+    if (!args[0]) return [{ type: 'dim', text: L('usage: cat <file>', 'uso: cat <archivo>') }];
+    const node = resolvePath(args[0]);
+    if (node && node.kind === 'file') {
+      return node.file === 'README.md' ? catReadme(node.project) : COMMANDS.demo([node.project.name]);
+    }
+    if (node && node.kind === 'cmd' && COMMANDS[node.cmd]) return COMMANDS[node.cmd](args.slice(1));
+    if (isDir(node)) return [{ type: 'error', text: `cat: ${args[0]}: ${L('Is a directory', 'Es un directorio')}` }];
+    const handler = !args[0].includes('/') && COMMANDS[args[0].toLowerCase()];
+    if (handler) return handler(args.slice(1));
+    return [{ type: 'error', text: `cat: ${args[0]}: ${L('No such file or directory', 'No existe el archivo o el directorio')}` }];
+  },
 
   whoami: () => [
     { type: 'ascii', text: String.raw`    __  ___  ______  __                  ` },
@@ -934,62 +1412,64 @@ const COMMANDS = {
     { type: 'ascii', text: String.raw`/_/ /_/_/  /_/   /_/ /_/\___/_/   \___/  ` },
     { text: '' },
     { type: 'heading', text: 'Jaider Duvan Velasco Diaz' },
-    { text: 'Software Engineer, sort of a MACCthematician and Electronic Engineer' },
+    { text: L('Software Engineer, sort of a MACCthematician and Electronic Engineer', 'Software Engineer, medio MACCtemático e Ingeniero Electrónico') },
     { type: 'dim', text: 'Bogotá, Colombia' },
     { text: '' },
-    { text: 'Building digital stuff for messaging and high-traffic spaces.' },
+    { text: L('Building digital stuff for messaging and high-traffic spaces.', 'Construyo cosas digitales para mensajería y espacios de alto tráfico.') },
     { text: '' },
-    { text: 'Usually focused on the frontend and UX, but completely' },
-    { text: 'comfortable jumping into APIs, automations, and AI.' },
+    { text: L('Usually focused on the frontend and UX, but completely', 'Casi siempre enfocado en el frontend y la UX, pero muy') },
+    { text: L('comfortable jumping into APIs, automations, and AI.', 'cómodo metiéndome en APIs, automatizaciones e IA.') },
     { text: '' },
-    { text: 'I care about clarity, common sense, the little details and' },
-    { text: 'tackling complex problems with good judgment and precision.' },
+    { text: L('I care about clarity, common sense, the little details and', 'Me importan la claridad, el sentido común, los pequeños detalles') },
+    { text: L('tackling complex problems with good judgment and precision.', 'y resolver problemas complejos con buen criterio y precisión.') },
     { text: '' },
-    { type: 'dim', text: '// Plus, building things as a team is just way cooler.' },
+    { type: 'dim', text: L('// Plus, building things as a team is just way cooler.', '// Además, construir cosas en equipo es mucho más chévere.') },
   ],
 
   skills: () => {
     const w = narrow() ? 10 : 20;
+    const stats = STATS();
+    const labelW = Math.max(...stats.map(([l]) => l.length)) + 2;
     return [
-      { type: 'heading', text: 'Core Stats' },
-      ...STATS.map(([label, v, word]) => ({ text: '  ' + pad(label, 20) + bar(v, w) + '  ' + word })),
+      { type: 'heading', text: L('Core Stats', 'Stats base') },
+      ...stats.map(([label, v, word]) => ({ text: '  ' + pad(label, labelW) + bar(v, w) + '  ' + word })),
       { text: '' },
-      { type: 'heading', text: 'How I Build' },
-      { text: '  Clear Architecture  ·  Test-Driven Mindset  ·  Fast Iteration' },
+      { type: 'heading', text: L('How I Build', 'Cómo construyo') },
+      { text: L('  Clear Architecture  ·  Test-Driven Mindset  ·  Fast Iteration', '  Arquitectura clara  ·  Mentalidad de tests primero  ·  Iteración rápida') },
       { text: '' },
-      { type: 'heading', text: "Stuff I'm fluent in right now" },
+      { type: 'heading', text: L("Stuff I'm fluent in right now", 'En lo que estoy fluido ahora mismo') },
       { text: '  TS/JS, Python, Go' },
       { text: '  React, Svelte, Fastify, Supabase, n8n' },
       { text: '' },
-      { type: 'dim', text: '  // Always willing to learn something new for the right project.' },
+      { type: 'dim', text: L('  // Always willing to learn something new for the right project.', '  // Siempre dispuesto a aprender algo nuevo para el proyecto correcto.') },
     ];
   },
 
   experience: () => [
     { type: 'heading', text: 'Inalambria Internacional SAS' },
-    { type: 'dim',     text: 'Software Engineer · Jan 2025 - Present · Remote, Colombia' },
-    { text: '  ├─ SMS platform product development (frontend + API + realtime)' },
-    { text: '  ├─ Interfaces focused on clarity, usability & efficiency' },
-    { text: '  ├─ Multi-user, high-concurrency features' },
-    { text: '  └─ TypeScript monorepo, strict typing, technical docs' },
+    { type: 'dim',     text: L('Software Engineer · Jan 2025 - Present · Remote, Colombia', 'Software Engineer · ene 2025 - presente · Remoto, Colombia') },
+    { text: L('  ├─ SMS platform product development (frontend + API + realtime)', '  ├─ Desarrollo de producto de la plataforma SMS (frontend + API + tiempo real)') },
+    { text: L('  ├─ Interfaces focused on clarity, usability & efficiency', '  ├─ Interfaces enfocadas en claridad, usabilidad y eficiencia') },
+    { text: L('  ├─ Multi-user, high-concurrency features', '  ├─ Funcionalidades multiusuario de alta concurrencia') },
+    { text: L('  └─ TypeScript monorepo, strict typing, technical docs', '  └─ Monorepo TypeScript, tipado estricto, documentación técnica') },
     { text: '' },
     { type: 'heading', text: 'Twnel' },
-    { type: 'dim',     text: 'Software Developer · Jun 2024 - Jan 2025 · Remote, Colombia' },
-    { text: '  ├─ Messaging platform (UX + integrations + automation)' },
-    { text: '  ├─ Built core UI/UX for SMS platform' },
-    { text: '  ├─ AI: translations, transcriptions, suggestions, bots' },
-    { text: '  └─ Android mobile dev + external integrations' },
+    { type: 'dim',     text: L('Software Developer · Jun 2024 - Jan 2025 · Remote, Colombia', 'Software Developer · jun 2024 - ene 2025 · Remoto, Colombia') },
+    { text: L('  ├─ Messaging platform (UX + integrations + automation)', '  ├─ Plataforma de mensajería (UX + integraciones + automatización)') },
+    { text: L('  ├─ Built core UI/UX for SMS platform', '  ├─ Construí la UI/UX central de la plataforma SMS') },
+    { text: L('  ├─ AI: translations, transcriptions, suggestions, bots', '  ├─ IA: traducciones, transcripciones, sugerencias, bots') },
+    { text: L('  └─ Android mobile dev + external integrations', '  └─ Desarrollo móvil Android + integraciones externas') },
     { text: '' },
     { type: 'heading', text: 'Universidad del Rosario' },
-    { type: 'dim',     text: 'Academic Tutor · 2021 - 2025 · Bogota, Colombia' },
-    { text: '  ├─ 4 years tutoring programming & engineering courses' },
-    { text: '  └─ Technical communication & teaching complex concepts' },
+    { type: 'dim',     text: L('Academic Tutor · 2021 - 2025 · Bogotá, Colombia', 'Tutor académico · 2021 - 2025 · Bogotá, Colombia') },
+    { text: L('  ├─ 4 years tutoring programming & engineering courses', '  ├─ 4 años como tutor de cursos de programación e ingeniería') },
+    { text: L('  └─ Technical communication & teaching complex concepts', '  └─ Comunicación técnica y enseñanza de conceptos complejos') },
   ],
 
   projects: (args) => {
     if (args[0]) {
       const p = findProject(args[0]);
-      if (!p) return [{ type: 'error', text: `projects: nothing named '${args[0]}'` }, { html: 'Try ' + cmdLink('projects') + ' for the list.' }];
+      if (!p) return [{ type: 'error', text: L(`projects: nothing named '${args[0]}'`, `projects: no hay nada llamado '${args[0]}'`) }, { html: L('Try ', 'Prueba ') + cmdLink('projects') + L(' for the list.', ' para ver la lista.') }];
       return projectCard(p);
     }
     const out = [];
@@ -998,26 +1478,28 @@ const COMMANDS = {
       out.push(...projectCard(p));
     });
     out.push({ text: '' });
-    out.push({ html: dim('  // one at a time: ') + cmdLink('projects foley') + dim(' · see it: ') + cmdLink('demo foley') + dim(' · go there: ') + cmdLink('open foley') });
+    out.push({ html: dim(L('  // one at a time: ', '  // de a uno: ')) + cmdLink('projects foley') + dim(L(' · see it: ', ' · míralo: ')) + cmdLink('demo foley') + dim(L(' · go there: ', ' · ve allá: ')) + cmdLink('open foley') });
     return out;
   },
 
   demo: (args) => {
     const demos = PROJECTS.filter((p) => p.demo);
-    if (!args[0]) {
+    const here = hereProject();
+    const name = args[0] || (here && here.demo ? here.name : '');
+    if (!name) {
       const w = Math.max(...demos.map((p) => p.name.length)) + 3;
       return [
         { type: 'heading', text: 'Demos' },
-        { type: 'dim', text: 'Rendered inline, the way kitty graphics show up in a real terminal.' },
+        { type: 'dim', text: L('Rendered inline, the way kitty graphics show up in a real terminal.', 'Se muestran aquí mismo, como los gráficos de kitty en una terminal real.') },
         { text: '' },
         ...demos.map((p) => ({ html: '  ' + cmdLink('demo ' + p.name.toLowerCase(), p.name) + ' '.repeat(w - p.name.length) + dim(esc(p.demo.file) + '  ' + esc(p.demo.size)) })),
       ];
     }
-    const p = findProject(args[0]);
-    if (!p || !p.demo) return [{ type: 'error', text: `demo: no demo for '${args[0]}'` }, { html: 'Try ' + cmdLink('demo') + ' for the list.' }];
+    const p = findProject(name);
+    if (!p || !p.demo) return [{ type: 'error', text: L(`demo: no demo for '${name}'`, `demo: no hay demo de '${name}'`) }, { html: L('Try ', 'Prueba ') + cmdLink('demo') + L(' for the list.', ' para ver la lista.') }];
     return [
-      { type: 'dim', text: `${p.demo.file} · ${p.demo.size} · ${p.demo.caption}` },
-      { html: `<img class="demo" src="${esc(p.demo.url)}" alt="${esc(p.name + ': ' + p.demo.caption)}">` },
+      { type: 'dim', text: `${p.demo.file} · ${p.demo.size} · ${demoCaption(p)}` },
+      { html: `<img class="demo" src="${esc(p.demo.url)}" alt="${esc(p.name + ': ' + demoCaption(p))}">` },
       { type: 'link', text: '  → https://github.com/' + p.repo },
     ];
   },
@@ -1026,7 +1508,7 @@ const COMMANDS = {
     await refreshRepos();
     const repos = [...state.repos].sort((a, b) => (b.stars - a.stars) || b.pushed.localeCompare(a.pushed));
     const nameW = Math.max(...repos.map((r) => r.name.length)) + 3;
-    const lines = [{ type: 'heading', text: 'Public repositories' }, { text: '' }];
+    const lines = [{ type: 'heading', text: L('Public repositories', 'Repositorios públicos') }, { text: '' }];
     for (const r of repos) {
       const stars = r.stars ? dim('  ★ ' + r.stars) : '';
       if (narrow()) {
@@ -1037,8 +1519,8 @@ const COMMANDS = {
       }
     }
     lines.push({ text: '' });
-    lines.push({ type: 'link', text: `  Browse all → https://github.com/${LOGIN}?tab=repositories` });
-    lines.push({ type: 'dim', text: state.reposLive ? '  // live from the GitHub API' : `  // snapshot from ${REPOS_AT}; the live API was rate-limited or slow` });
+    lines.push({ type: 'link', text: L('  Browse all → ', '  Ver todos → ') + `https://github.com/${LOGIN}?tab=repositories` });
+    lines.push({ type: 'dim', text: state.reposLive ? L('  // live from the GitHub API', '  // en vivo desde la API de GitHub') : L(`  // snapshot from ${REPOS_AT}; the live API was rate-limited or slow`, `  // foto del ${REPOS_AT}; la API en vivo estaba limitada o lenta`) });
     return lines;
   },
 
@@ -1047,41 +1529,43 @@ const COMMANDS = {
     const repos = [...state.repos].sort((a, b) => b.pushed.localeCompare(a.pushed)).slice(0, 10);
     const nameW = Math.max(...repos.map((r) => r.name.length)) + 3;
     return [
-      { type: 'heading', text: 'Recently pushed' },
+      { type: 'heading', text: L('Recently pushed', 'Lo último que subí') },
       { text: '' },
       ...repos.map((r) => ({ html: '  ' + dim(esc(r.pushed)) + '  ' + extLink(r.url, r.name, 'repo') + ' '.repeat(nameW - r.name.length) + dim(esc(r.lang)) })),
       { text: '' },
-      { type: 'dim', text: state.reposLive ? '  // live from the GitHub API' : `  // snapshot from ${REPOS_AT}` },
+      { type: 'dim', text: state.reposLive ? L('  // live from the GitHub API', '  // en vivo desde la API de GitHub') : L(`  // snapshot from ${REPOS_AT}`, `  // foto del ${REPOS_AT}`) },
     ];
   },
 
   open: (args) => {
-    if (!args[0]) {
+    const here = hereProject();
+    const name = args[0] || (here ? here.name : '');
+    if (!name) {
       return [
-        { type: 'dim', text: 'usage: open <project>' },
+        { type: 'dim', text: L('usage: open <project>', 'uso: open <proyecto>') },
         { html: '  ' + PROJECTS.map((p) => cmdLink('open ' + p.name.toLowerCase(), p.name)).join('  ') },
       ];
     }
-    const p = findProject(args[0]);
-    const r = p ? null : findRepo(args[0]);
+    const p = findProject(name);
+    const r = p ? null : findRepo(name);
     const url = p ? 'https://github.com/' + p.repo : (r ? r.url : null);
-    if (!url) return [{ type: 'error', text: `open: nothing named '${args[0]}'` }, { html: 'Try ' + cmdLink('projects') + ' or ' + cmdLink('repos') + '.' }];
+    if (!url) return [{ type: 'error', text: L(`open: nothing named '${name}'`, `open: no hay nada llamado '${name}'`) }, { html: L('Try ', 'Prueba ') + cmdLink('projects') + L(' or ', ' o ') + cmdLink('repos') + '.' }];
     window.open(url, '_blank', 'noopener');
-    return [{ type: 'dim', text: `Opening ${url} in a new tab …` }, { type: 'link', text: '  → ' + url }];
+    return [{ type: 'dim', text: L(`Opening ${url} in a new tab …`, `Abriendo ${url} en una pestaña nueva …`) }, { type: 'link', text: '  → ' + url }];
   },
 
   education: () => [
     { type: 'heading', text: 'Universidad del Rosario' },
-    { type: 'dim',     text: 'Bogota, Colombia' },
+    { type: 'dim',     text: 'Bogotá, Colombia' },
     { text: '' },
-    { text: '  Applied Mathematics & Computer Science   May 2025' },
-    { text: '  Electronic Engineering                   Mar 2025' },
+    { text: L('  Applied Mathematics & Computer Science   May 2025', '  Matemáticas Aplicadas y Ciencias de la Computación   may 2025') },
+    { text: L('  Electronic Engineering                   Mar 2025', '  Ingeniería Electrónica                               mar 2025') },
     { text: '' },
-    { type: 'dim', text: '  ★ Academic scholarship recipient' },
+    { type: 'dim', text: L('  ★ Academic scholarship recipient', '  ★ Becado por excelencia académica') },
   ],
 
   contact: () => [
-    { type: 'heading', text: "Let's connect" },
+    { type: 'heading', text: L("Let's connect", 'Hablemos') },
     { text: '' },
     { type: 'link', text: '  Email       correodejaider@gmail.com' },
     { type: 'link', text: '  LinkedIn    https://linkedin.com/in/jaider-vd' },
@@ -1089,30 +1573,236 @@ const COMMANDS = {
   ],
 
   tools: () => [
-    { type: 'heading', text: 'Dev environment' },
+    { type: 'heading', text: L('Dev environment', 'Entorno de desarrollo') },
     { text: '' },
     { text: '  OS                Linux (Fedora)' },
     { text: '  Editor            VS Code' },
-    { text: '  Terminal          WARP' },
+    { text: '  Terminal          Warp' },
     { text: '  AI Assistants     Claude Code, OpenCode' },
     { text: '  Workflow          SDD, TDD, CI/CD, docs' },
     { text: '  Containerization  Docker' },
-    { text: '  Package Mgmt      pnpm, bun, devenv (learning)' },
+    { text: L('  Package Mgmt      pnpm, bun, devenv (learning)', '  Package Mgmt      pnpm, bun, devenv (aprendiendo)') },
     { text: '  Automation        n8n' },
     { text: '  API Design        OpenAPI, Fastify' },
     { text: '  Deployment        GitHub Pages, Vercel, Cloudflare' },
     { text: '  Version Control   Git + GitHub' },
     { text: '' },
-    { type: 'dim', text: '  // no fixed model, I'm always testing whatever is newest' },
+    { type: 'dim', text: L("  // no fixed model, I'm always testing whatever is newest", '  // sin modelo fijo, siempre estoy probando lo más nuevo') },
   ],
 
   languages: () => {
     const w = narrow() ? 12 : 20;
     return [
-      { type: 'heading', text: 'Spoken languages' },
+      { type: 'heading', text: L('Spoken languages', 'Idiomas') },
       { text: '' },
-      { text: '  ' + pad('Spanish', 12) + bar(20, w) + '  native' },
-      { text: '  ' + pad('English', 12) + bar(14, w) + '  B2' },
+      { text: '  ' + pad(L('Spanish', 'Español'), 12) + bar(20, w) + '  ' + L('native', 'nativo') },
+      { text: '  ' + pad(L('English', 'Inglés'), 12) + bar(14, w) + '  B2' },
+    ];
+  },
+
+  locale: () => [{ text: `LANG=${es ? 'es_CO' : 'en_US'}.UTF-8` }],
+
+  history: () => {
+    const list = [...cmdHistory].reverse();
+    return list.map((c, i) => ({ text: String(i + 1).padStart(5) + '  ' + c }));
+  },
+
+  man: (args) => {
+    const topic = (args[0] || '').toLowerCase();
+    if (!topic) return [{ text: L('What manual page do you want?', '¿Qué página del manual quieres?') }, { html: L('For example: ', 'Por ejemplo: ') + cmdLink('man jaider') }];
+    if (topic === 'jaider' || topic === 'hithere') {
+      const H = (text) => ({ type: 'heading', text });
+      const T = (text) => ({ text: '       ' + text });
+      return [
+        { type: 'dim', text: L('JAIDER(1)                    User Commands                    JAIDER(1)', 'JAIDER(1)                 Comandos de usuario                 JAIDER(1)') },
+        { text: '' },
+        H(L('NAME', 'NOMBRE')),
+        T(L('jaider - software engineer, sometimes curious', 'jaider - software engineer, a veces curioso')),
+        { text: '' },
+        H(L('SYNOPSIS', 'SINOPSIS')),
+        T(L('jaider [--frontend] [--api] [--ai] [--hardware] <problem>', 'jaider [--frontend] [--api] [--ai] [--hardware] <problema>')),
+        { text: '' },
+        H(L('DESCRIPTION', 'DESCRIPCIÓN')),
+        T(L('Builds digital stuff for messaging and high-traffic spaces.', 'Construye cosas digitales para mensajería y espacios de')),
+        T(L('Starts in the frontend and the UX by default, and follows the', 'alto tráfico. Arranca por el frontend y la UX, y sigue el')),
+        T(L('problem into APIs, automations and AI when it leads there.', 'problema hasta las APIs, automatizaciones e IA si hace falta.')),
+        { text: '' },
+        H(L('OPTIONS', 'OPCIONES')),
+        T(L('--team          Recommended. Building things as a team is way cooler.', '--team          Recomendado. Construir en equipo es mucho más chévere.')),
+        T(L('--docs          Reads them first.', '--docs          Las lee primero.')),
+        T(L('--overengineer  Not implemented, on purpose.', '--overengineer  No implementado, a propósito.')),
+        { text: '' },
+        H(L('BUGS', 'ERRORES')),
+        T(L('Framework loyalty is known to be low.', 'Se sabe que la lealtad a un framework es baja.')),
+        { text: '' },
+        H(L('SEE ALSO', 'VÉASE TAMBIÉN')),
+        { html: '       ' + ['whoami', 'projects', 'experience', 'contact'].map((c) => cmdLink(c, c + '(1)')).join(', ') },
+      ];
+    }
+    const row = HELP().find(([n]) => n === args.join(' ').toLowerCase()) || HELP().find(([n]) => n.split(' ')[0] === topic);
+    if (row) return [{ type: 'heading', text: L('NAME', 'NOMBRE') }, { text: `       ${row[0]} - ${row[1]}` }];
+    return [{ type: 'error', text: L(`No manual entry for ${args[0]}`, `No hay entrada del manual para ${args[0]}`) }];
+  },
+
+  theme: async (args) => {
+    const name = (args[0] || '').toLowerCase();
+    const current = store.get('gh-jaider.theme') || 'warp';
+    if (!name) {
+      return [
+        { html: '  ' + THEME_NAMES.map((t) => cmdLink('theme ' + t, t) + (t === current ? dim(' *') : '')).join('  ') },
+        { type: 'dim', text: L("  // warp is this terminal's own; the other four are read live from teletipo's themes.css", '  // warp es el propio de esta terminal; los otros cuatro se leen en vivo del themes.css de teletipo') },
+      ];
+    }
+    if (!THEME_NAMES.includes(name)) return [{ type: 'error', text: L(`theme: no theme named '${name}'`, `theme: no hay un tema llamado '${name}'`) }, { html: L('Try ', 'Prueba ') + cmdLink('theme') + '.' }];
+    if (name === 'warp') {
+      applyTheme(null);
+      store.del('gh-jaider.theme'); store.del('gh-jaider.themeVars');
+      return [{ type: 'dim', text: '  warp' }];
+    }
+    try {
+      if (!themesCss) {
+        const res = await fetch(THEMES_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        themesCss = await res.text();
+      }
+    } catch (e) {
+      return [{ type: 'error', text: L(`theme: could not read teletipo's themes.css (${e.message})`, `theme: no se pudo leer el themes.css de teletipo (${e.message})`) }];
+    }
+    const vars = parseTheme(themesCss, name);
+    if (!vars) return [{ type: 'error', text: L(`theme: '${name}' is not in teletipo's themes.css any more`, `theme: '${name}' ya no está en el themes.css de teletipo`) }];
+    applyTheme(vars);
+    store.set('gh-jaider.theme', name);
+    store.set('gh-jaider.themeVars', JSON.stringify(vars));
+    return [
+      { type: 'dim', text: `  ${name} · teletipo/css/themes.css` },
+      { html: '  ' + ['--accent', '--prompt', '--warn', '--link', '--error', '--note'].map((v) => `<span style="color:var(${v})">██</span>`).join(' ') },
+    ];
+  },
+
+  karel: async (args) => {
+    const sub = (args[0] || '').toLowerCase();
+    let mod;
+    try {
+      mod = await karelLoad();
+    } catch (e) {
+      return [{ type: 'error', text: L('karel: the interpreter could not be loaded', 'karel: no se pudo cargar el intérprete') + ` (${e.message})` }];
+    }
+    const usage = [
+      { html: '  ' + cmdLink('karel run') + dim(L('   runs harvest.kli: sweep the field, pick every beeper', '   corre harvest.kli: barre el campo y recoge todos los zumbadores')) },
+      { html: '  ' + ['move', 'turnleft', 'pickbeeper', 'putbeeper'].map((s) => cmdLink('karel ' + s)).join(dim(' · ')) + dim(L('   one instruction at a time', '   una instrucción a la vez')) },
+      { html: '  ' + cmdLink('karel src') + dim(' · ') + cmdLink('karel reset') },
+      { type: 'link', text: L('  the full playground → ', '  el playground completo → ') + 'https://gh-jaider.github.io/karel/' },
+    ];
+    if (!sub) {
+      return [
+        { type: 'dim', text: L('The interpreter from GH-Jaider/karel, running in this page.', 'El intérprete de GH-Jaider/karel, corriendo en esta página.') },
+        { html: karelDraw(karelWorld) },
+        ...usage,
+      ];
+    }
+    if (sub === 'reset') {
+      karelWorld = new mod.World(KAREL_MAP);
+      return [{ html: karelDraw(karelWorld) }];
+    }
+    if (sub === 'src' || sub === 'cat') {
+      return [{ type: 'dim', text: 'harvest.kli' }, ...KAREL_SRC.split('\n').map((l) => ({ text: '  ' + l }))];
+    }
+    if (KAREL_STEPS[sub]) {
+      let note = '';
+      try {
+        karelWorld[KAREL_STEPS[sub]]();
+      } catch (e) {
+        note = `<span style="color:var(--error)">${esc(e.message)}</span>`;
+      }
+      return [{ html: karelDraw(karelWorld, note) }];
+    }
+    if (sub === 'run') {
+      karelWorld = new mod.World(KAREL_MAP);
+      const world = karelWorld;
+      const interp = new mod.Interpreter(world);
+      const problems = interp.load(KAREL_SRC).filter((d) => d.severity === 'error');
+      if (problems.length) return problems.map((d) => ({ type: 'error', text: `harvest.kli:${d.line}: ${d.message}` }));
+      const src = KAREL_SRC.split('\n');
+      return [
+        { type: 'dim', text: 'harvest.kli · ' + stopHint() },
+        {
+          live: async (el, ctl) => {
+            let failed = null;
+            let line = 0;
+            let steps = 0;
+            interp.onStep = (n) => { line = n; };
+            interp.onError = (err) => { failed = err; };
+            const show = (note) => { el.innerHTML = karelDraw(world, note); };
+            show(' ');
+            let more = true;
+            while (more && !ctl.aborted) {
+              more = interp.step();
+              steps++;
+              if (failed) break;
+              if (!reducedMotion && !document.hidden) {
+                show(dim(`harvest.kli:${line}  `) + esc((src[line - 1] || '').trim()));
+                scrollBottom();
+                await sleep(70);
+              }
+            }
+            if (failed) show(`<span style="color:var(--error)">${esc(failed.message)}</span>`);
+            else if (ctl.aborted) show(dim(L(`stopped after ${steps} steps`, `detenido tras ${steps} pasos`)));
+            else show(dim(L(`turned off after ${steps} steps with ${world.karel.beepersInBag} beepers in the bag`, `apagado tras ${steps} pasos con ${world.karel.beepersInBag} zumbadores en la bolsa`)));
+          },
+        },
+      ];
+    }
+    return [{ type: 'error', text: L(`karel: '${args[0]}' is not something Karel knows`, `karel: '${args[0]}' no es algo que Karel sepa hacer`) }, ...usage];
+  },
+
+  collisions: (args) => {
+    const n = Math.max(2, Math.min(9, parseInt(args[0], 10) || 5));
+    const cols = narrow() ? 40 : 64;
+    const rows = narrow() ? 12 : 14;
+    const W = cols * 2, H = rows * 4;
+    const bodies = collisionsWorld(n, W, H);
+    const kinetic = () => bodies.reduce((s, b) => s + 0.5 * b.m * (b.vx * b.vx + b.vy * b.vy) / 100, 0);
+    return [
+      { type: 'dim', text: `${bodies.length} ` + L('rigid discs, perfectly elastic · ', 'discos rígidos, perfectamente elásticos · ') + stopHint() },
+      {
+        live: async (el, ctl) => {
+          el.innerHTML = '<pre class="live braille"></pre><pre class="live"></pre>';
+          const [canvas, readout] = el.children;
+          const e0 = kinetic();
+          let impacts = 0;
+          let t = 0;
+          const show = () => {
+            canvas.innerHTML = collisionsDraw(bodies, cols, rows);
+            const start = narrow() ? '' : ` (${L('started at', 'empezó en')} ${e0.toFixed(2)})`;
+            readout.innerHTML = dim(`  Ek ${kinetic().toFixed(2)} J${start} · ${L('impacts', 'impactos')} ${impacts} · t ${t.toFixed(1)} s`);
+          };
+          show();
+          scrollBottom();
+          if (reducedMotion) return;
+          let last = performance.now();
+          while (!ctl.aborted && t < 20) {
+            await new Promise((r) => requestAnimationFrame(r));
+            const now = performance.now();
+            const dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+            for (let i = 0; i < 4; i++) impacts += collisionsStep(bodies, W, H, dt / 4);
+            t += dt;
+            show();
+          }
+        },
+      },
+      { type: 'link', text: L('  the real lab, with units and charts → ', '  el laboratorio de verdad, con unidades y gráficas → ') + 'https://gh-jaider.github.io/Collisions-Simulator/' },
+    ];
+  },
+
+  echo: (args) => [{ text: args.join(' ') }],
+  date: () => [{ text: new Date().toString() }],
+  sudo: () => [{ type: 'error', text: L('jaider is not in the sudoers file. This incident will be reported.', 'jaider no está en el archivo sudoers. Este incidente será reportado.') }],
+  curl: (args) => {
+    if (args.some((a) => /\/ff$/.test(a))) return COMMANDS.fastfetch();
+    return [
+      { type: 'dim', text: L('  // this one is for your own terminal:', '  // este es para tu propia terminal:') },
+      { text: '  curl -sL gh-jaider.github.io/GH-Jaider/ff' },
     ];
   },
 
@@ -1183,14 +1873,24 @@ const COMMANDS = {
         "..............9777779999889889999666668888888888881666668988",
         "..............9997799999999899999666868888888888888666698998",
         "...............999999999999999999666888888888888888666999898"
-      ]
+      ],
+      "heart": {
+        "rows": [
+          5,
+          7
+        ],
+        "cols": [
+          1,
+          6
+        ]
+      }
     };
     // GEN:art:end
     // GEN:info: auto-generated from profile.json by scripts/generate.mjs; edit profile.json instead
     const info = [
       { label: 'jaider@github', value: '', bold: true },
       { label: '──────────────────────', value: '', sep: true },
-      { label: 'OS', value: 'Linux, Windows, MacOS (?)' },
+      { label: 'OS', value: 'Linux, Windows, macOS (?)' },
       { label: 'Host', value: 'Inalambria Internacional' },
       { label: 'Kernel', value: 'Software Engineer' },
       { label: 'Uptime', value: '5+ years (?)' },
@@ -1224,20 +1924,23 @@ const COMMANDS = {
       return right;
     };
     // Art rows become colour runs, the way a terminal would print them with ANSI colours
-    const artRow = (row, colors) => {
+    const heart = ART.heart;
+    const inHeart = (i, j) => heart && i >= heart.rows[0] && i <= heart.rows[1] && j >= heart.cols[0] && j <= heart.cols[1];
+    const artRow = (row, colors, i) => {
       let out = '';
       for (let j = 0; j < row.length;) {
         const c = colors[j] || '.';
+        const floats = c !== '.' && inHeart(i, j);
         let k = j;
-        while (k < row.length && (colors[k] || '.') === c) k++;
+        while (k < row.length && (colors[k] || '.') === c && (c !== '.' && inHeart(i, k)) === floats) k++;
         const chunk = esc(row.slice(j, k));
-        out += c === '.' ? chunk : `<span style="color:${ART.palette[parseInt(c, 16)]}">${chunk}</span>`;
+        out += c === '.' ? chunk : `<span${floats ? ' class="ff-heart"' : ''} style="color:${ART.palette[parseInt(c, 16)]}">${chunk}</span>`;
         j = k;
       }
       return out;
     };
     const cols = Math.max(...ART.rows.map((r) => r.length));
-    const artHtml = ART.rows.map((r, i) => artRow(r, ART.colors[i] || '')).join('\n');
+    const artHtml = ART.rows.map((r, i) => artRow(r, ART.colors[i] || '', i)).join('\n');
     const infoLines = info.map(infoHtml);
     while (infoLines.length && !infoLines[infoLines.length - 1]) infoLines.pop();
     if (narrow()) {
@@ -1266,17 +1969,45 @@ let keyboardUser = false;   // on phones, only steal focus (and pop the keyboard
 const cmdHistory = [];
 let historyIdx   = -1;
 
-const HIDDEN_FROM_URL = new Set(['exit', 'clear', 'open', 'cat', 'ls']);
-const completionNames = HELP.map(([n]) => n).concat(['neofetch', 'recent', 'ls', 'cat']);
+let interrupted  = false;   // Ctrl+C while output is printing
+let liveCtl      = null;    // set while a live block (karel run, collisions) owns the terminal
+
+const HIDDEN_FROM_URL = new Set(['exit', 'clear', 'open', 'cat', 'ls', 'cd', 'pwd', 'history', 'theme', 'sudo', 'echo', 'date', 'curl', 'locale']);
+const completionNames = HELP_NAMES.concat(EXTRA_NAMES);
+
+// Paths complete the way a shell does it: the directory part stays, the last segment is matched.
+function pathCandidates(token, dirsOnly) {
+  const cut = token.lastIndexOf('/') + 1;
+  const dirPart = token.slice(0, cut);
+  const node = resolvePath(dirPart || '.');
+  if (!isDir(node)) return [];
+  return listDir(node)
+    .filter((e) => e.dir || !dirsOnly)
+    .map((e) => dirPart + e.name + (e.dir ? '/' : ''));
+}
 const ARG_COMPLETIONS = {
-  projects: () => PROJECTS.map((p) => p.name),
-  demo:     () => PROJECTS.filter((p) => p.demo).map((p) => p.name),
-  open:     () => PROJECTS.map((p) => p.name).concat(state.repos.map((r) => r.name)),
-  cat:      () => HELP.map(([n]) => n),
-  git:      () => ['log'],
+  projects:   () => PROJECTS.map((p) => p.name),
+  demo:       () => PROJECTS.filter((p) => p.demo).map((p) => p.name),
+  open:       () => PROJECTS.map((p) => p.name).concat(state.repos.map((r) => r.name)),
+  cd:         (t) => pathCandidates(t, true),
+  ls:         (t) => pathCandidates(t, false),
+  cat:        (t) => pathCandidates(t, false).concat(t.includes('/') ? [] : HELP_NAMES.filter((n) => !n.includes(' '))),
+  git:        () => ['log'],
+  man:        () => ['jaider'].concat(HELP_NAMES.filter((n) => !n.includes(' '))),
+  theme:      () => THEME_NAMES,
+  karel:      () => ['run', 'move', 'turnleft', 'pickbeeper', 'putbeeper', 'src', 'reset'],
 };
 
 // ── helpers ──
+function syncCwd() {
+  document.getElementById('cwd').textContent = cwdLabel();
+  document.getElementById('tab-title').textContent = 'jaider@github:' + cwdLabel();
+}
+function syncLang() {
+  input.placeholder = L('Type a command...', 'Escribe un comando...');
+  if (karelMod) karelMod.setLocale(es ? 'es' : 'en');
+}
+
 function scrollBottom() {
   terminal.scrollTop = terminal.scrollHeight;
 }
@@ -1312,7 +2043,7 @@ function createBlock(cmd) {
   block.className = 'command-block';
   const promptDiv = document.createElement('div');
   promptDiv.className = 'block-prompt';
-  promptDiv.innerHTML = `<span class="prompt-prefix">jaider@github:~$</span>&nbsp;<span class="cmd-text">${esc(cmd)}</span>`;
+  promptDiv.innerHTML = `<span class="prompt-prefix">jaider@github:${esc(promptCwd)}$</span>&nbsp;<span class="cmd-text">${esc(cmd)}</span>`;
   block.appendChild(promptDiv);
   const outputDiv = document.createElement('div');
   outputDiv.className = 'block-output';
@@ -1323,6 +2054,7 @@ function createBlock(cmd) {
 async function typeLines(lines, cmd) {
   isTyping = true;
   skipTyping = false;
+  interrupted = false;
   input.disabled = true;
 
   let container;
@@ -1341,6 +2073,7 @@ async function typeLines(lines, cmd) {
   const animate = !reducedMotion && !document.hidden && lines.length <= 12;
 
   for (const line of lines) {
+    if (interrupted) break;
     let cls = 'output';
     if (line.type === 'heading')    cls = 'output heading';
     else if (line.type === 'dim')   cls = 'output dim';
@@ -1352,6 +2085,20 @@ async function typeLines(lines, cmd) {
     const el = createLine('', cls);
     container.appendChild(el);
     const text = line.text || '';
+
+    // Live blocks redraw themselves until they finish or Ctrl+C reaches them
+    if (line.live) {
+      liveCtl = { aborted: false };
+      try {
+        await line.live(el, liveCtl);
+      } catch (e) {
+        el.className = 'line output error';
+        el.textContent = String((e && e.message) || e);
+      }
+      liveCtl = null;
+      scrollBottom();
+      continue;
+    }
 
     if (line.html !== undefined) {
       el.innerHTML = line.html || ' ';
@@ -1386,6 +2133,8 @@ async function typeLines(lines, cmd) {
     scrollBottom();
     if (line.type === 'link') linkify(el);
   }
+  if (interrupted) container.appendChild(createLine('^C', 'output dim'));
+  interrupted = false;
 
   isTyping = false;
   skipTyping = false;
@@ -1421,6 +2170,18 @@ function exec(raw, opts = {}) {
     cmdHistory.unshift(line);
     historyIdx = -1;
   }
+  promptCwd = cwdLabel();
+
+  // LANG=es_CO (or `export LANG=…`, or `lang es`) switches the language of everything printed from here on
+  const lang = line.match(/^(?:export\s+)?LANG=["']?([A-Za-z]+)/) || line.match(/^lang\s+([A-Za-z]+)/i);
+  if (lang) {
+    es = /^es/i.test(lang[1]);
+    store.set('gh-jaider.lang', es ? 'es' : 'en');
+    syncLang();
+    return run(line, [{
+      html: dim(L('  // back to English · ', '  // listo, todo en español desde aquí · ')) + cmdLink('help') + dim(' · ') + cmdLink(es ? 'LANG=en_US' : 'LANG=es_CO'),
+    }], false);
+  }
   const parts = line.split(/\s+/);
   const cmd = parts[0].toLowerCase();
   const args = parts.slice(1);
@@ -1434,12 +2195,11 @@ function exec(raw, opts = {}) {
     window.location.href = PROFILE_URL;
     return;
   }
-  if (cmd === 'cat' && args.length) return exec(args.join(' '), opts);
   if (cmd === 'git') {
     if (args[0] === 'log') return run(line, COMMANDS.recent(args.slice(1)), true);
     return run(line, [
-      { type: 'error', text: `git: '${args[0] || ''}' is not a git command here.` },
-      { html: 'The only one that works is ' + cmdLink('git log') + '.' },
+      { type: 'error', text: L(`git: '${args[0] || ''}' is not a git command here.`, `git: '${args[0] || ''}' no es un comando de git aquí.`) },
+      { html: L('The only one that works is ', 'El único que funciona es ') + cmdLink('git log') + '.' },
     ], false);
   }
 
@@ -1450,8 +2210,8 @@ function exec(raw, opts = {}) {
   if (project) return run(line, projectCard(project), true);
 
   run(line, [
-    { type: 'error', text: `command not found: ${cmd}` },
-    { html: 'Type ' + cmdLink('help') + ' to see available commands.' },
+    { type: 'error', text: L(`command not found: ${cmd}`, `comando no encontrado: ${cmd}`) },
+    { html: L('Type ', 'Escribe ') + cmdLink('help') + L(' to see available commands.', ' para ver los comandos disponibles.') },
   ], false);
 }
 
@@ -1489,12 +2249,12 @@ function complete() {
     cands = completionNames.filter((n) => n.startsWith(token.toLowerCase()));
   } else {
     const cmd = head.split(/\s+/)[0].toLowerCase();
-    const pool = ARG_COMPLETIONS[cmd] ? ARG_COMPLETIONS[cmd]() : [];
+    const pool = ARG_COMPLETIONS[cmd] ? ARG_COMPLETIONS[cmd](token) : [];
     cands = [...new Set(pool)].filter((n) => n.toLowerCase().startsWith(token.toLowerCase()));
   }
   if (!cands.length) return;
   if (cands.length === 1) {
-    input.value = before + cands[0] + ' ';
+    input.value = before + cands[0] + (cands[0].endsWith('/') ? '' : ' ');
     clearCandidates();
     return;
   }
@@ -1537,16 +2297,35 @@ input.addEventListener('keydown', (e) => {
   } else if (e.key === 'l' && e.ctrlKey) {
     e.preventDefault();
     exec('clear');
+  } else if (e.key === 'c' && e.ctrlKey && input.selectionStart === input.selectionEnd && !String(window.getSelection())) {
+    // Ctrl+C on a half-typed line abandons it, the way a shell does (with a selection it stays a copy)
+    e.preventDefault();
+    clearCandidates();
+    const el = createLine('', 'output dim');
+    el.textContent = `jaider@github:${cwdLabel()}$ ${input.value}^C`;
+    terminal.appendChild(el);
+    input.value = '';
+    historyIdx = -1;
+    scrollBottom();
   }
 });
 
 // Any plain key or tap while output is printing fast-forwards it (the input is disabled then,
 // so this has to live on the document). Escape also leaves the maximized window.
 document.addEventListener('keydown', (e) => {
+  const sigint = e.ctrlKey && e.key === 'c';
+  if (liveCtl) {
+    if (sigint || e.key === 'q' || e.key === 'Escape') { liveCtl.aborted = true; e.preventDefault(); }
+    return;
+  }
+  if (isTyping && sigint) { interrupted = true; skipTyping = true; e.preventDefault(); return; }
   if (isTyping && !e.metaKey && !e.ctrlKey && !e.altKey) skipTyping = true;
   if (e.key === 'Escape' && terminalEl.classList.contains('maximized')) toggleMaximize();
 });
-document.addEventListener('pointerdown', () => { if (isTyping) skipTyping = true; }, { passive: true });
+document.addEventListener('pointerdown', (e) => {
+  if (liveCtl) { if (e.pointerType === 'touch') liveCtl.aborted = true; return; }   // phones have no Ctrl+C
+  if (isTyping) skipTyping = true;
+}, { passive: true });
 
 // Clickable command names in the output
 terminal.addEventListener('click', (e) => {
@@ -1583,8 +2362,12 @@ maxBtn.addEventListener('keydown', (e) => {
 });
 
 // ── boot sequence ──
+try { applyTheme(JSON.parse(store.get('gh-jaider.themeVars') || 'null')); } catch (e) {}
+syncLang();
+
 (async () => {
   await sleep(document.hidden ? 0 : 300);
+  const spanishVisitor = !es && /^es/i.test(navigator.language || '');
   await typeLines([
     { type: 'ascii', text: String.raw`    __  ___  ______  __                  ` },
     { type: 'ascii', text: String.raw`   / / / (_)/_  __/ / /_  ___  ________  ` },
@@ -1592,10 +2375,11 @@ maxBtn.addEventListener('keydown', (e) => {
     { type: 'ascii', text: String.raw` / __  / /  / /   / / / /  __/ /  /  __/ ` },
     { type: 'ascii', text: String.raw`/_/ /_/_/  /_/   /_/ /_/\___/_/   \___/  ` },
     { text: '' },
-    { html: 'Hello! I\'m Jaider. <span style="color: #946bbf">(yeah Jaider like HiThere)</span>' },
-    { type: 'dim', text: 'Sometimes Curious & a Software Engineer in Bogotá, Colombia' },
+    { html: L('Hello! I\'m Jaider. ', '¡Hola! Soy Jaider. ') + '<span style="color: var(--note)">' + L('(yeah Jaider like HiThere)', '(sí, Jaider como HiThere)') + '</span>' },
+    { type: 'dim', text: L('Sometimes Curious & a Software Engineer in Bogotá, Colombia', 'A veces curioso y Software Engineer en Bogotá, Colombia') },
     { text: '' },
-    { html: 'Type \'' + cmdLink('help') + '\' to see available commands, or click one: ' + ['projects', 'repos', 'contact'].map((c) => cmdLink(c)).join(' · ') },
+    { html: L("Type '", "Escribe '") + cmdLink('help') + L("' to see available commands, or click one: ", "' para ver los comandos, o haz clic en uno: ") + ['projects', 'repos', 'contact'].map((c) => cmdLink(c)).join(' · ') },
+    ...(spanishVisitor ? [{ html: dim('// ¿hablas español? ') + cmdLink('LANG=es_CO') }] : []),
   ]);
 
   // Deep links: /#projects, /#demo%20foley, or ?cmd=projects

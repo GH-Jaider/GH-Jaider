@@ -11,6 +11,7 @@
 //   terminal.svg   README terminal, JetBrains Mono subsets from assets/fonts embedded
 //   index.html     GEN:art / GEN:info / GEN:projects / GEN:repos blocks
 //   README.md      GEN:projects block (`ls ~/projects` with real links)
+//   ff             the fastfetch as ANSI text, for curl
 //   og.png         link preview rendered from terminal.svg (qlmanage on macOS, else headless Chrome)
 import { readFileSync, writeFileSync, existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -102,10 +103,25 @@ function artRunsSvg(line, colors) {
   }
   return out;
 }
+// The heart (artHeart) is cut out of its rows and drawn as its own elements, so it can drift on its own.
+const heart = data.artHeart;
+const artClass = `mono${data.artFont ? ' art' : ''}`;
 const artRows = data.art.map((line, i) => {
   if (!line.trim()) return '';
   const colors = data.artColors ? data.artColors[i] : null;
-  return `  <text class="mono${data.artFont ? ' art' : ''}" fill="${GREEN}" x="${LEFT}" y="${x(ART_TOP + i * ART_LH)}" xml:space="preserve">${artRunsSvg(line, colors)}</text>`;
+  const y = x(ART_TOP + i * ART_LH);
+  const out = [];
+  let rest = line;
+  if (heart && i >= heart.rows[0] && i <= heart.rows[1]) {
+    const [c0, c1] = heart.cols;
+    const piece = line.slice(c0, c1 + 1);
+    rest = line.slice(0, c0) + ' '.repeat(piece.length) + line.slice(c1 + 1);
+    if (piece.trim()) {
+      out.push(`  <text class="${artClass} heart" fill="${GREEN}" x="${x(LEFT + c0 * CH)}" y="${y}" xml:space="preserve">${artRunsSvg(piece, colors ? colors.slice(c0, c1 + 1) : null)}</text>`);
+    }
+  }
+  if (rest.trim()) out.push(`  <text class="${artClass}" fill="${GREEN}" x="${LEFT}" y="${y}" xml:space="preserve">${artRunsSvg(rest, colors)}</text>`);
+  return out.join('\n');
 }).filter(Boolean).join('\n');
 const infoRows = data.info.map((entry, i) => infoSvg(entry, ART_TOP + i * LH)).filter(Boolean).join('\n');
 const fetchRows = artRows + '\n' + infoRows;
@@ -126,6 +142,8 @@ ${fontCss}
     .icon-bright { stroke: #ffffff; fill: none; stroke-width: 1.5; stroke-linecap: round; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
     .blink { animation: blink 1s step-end infinite; }
+    .heart { animation: heartbob 4s step-end infinite; }
+    @keyframes heartbob { 0%, 100% { transform: translateY(0); } 25%, 75% { transform: translateY(-${x(13 * 0.3)}px); } 50% { transform: translateY(-${x(13 * 0.6)}px); } }
     .type-cover { animation: typecover 9s steps(${cmd.length}, end) infinite; }
     .type-cursor { animation: cursormove 9s steps(${cmd.length}, end) infinite, blink 1s step-end infinite; }
     .cursor-gate { animation: cursorgate 9s linear infinite; }
@@ -142,6 +160,7 @@ ${fontCss}
       .cursor-gate { animation: none; opacity: 0; }
       .out1, .out2 { animation: none; opacity: 1; }
       .blink { animation: none; }
+      .heart { animation: none; }
     }
   </style>
 
@@ -226,6 +245,54 @@ ${fetchRows}
 writeFileSync(join(root, 'terminal.svg'), svg);
 console.log(`terminal.svg regenerated (${(svg.length / 1024).toFixed(0)} KB, fonts ${fontCss ? 'embedded' : 'NOT embedded'})`);
 
+// ── ff: the same fastfetch as plain ANSI, for `curl -sL gh-jaider.github.io/GH-Jaider/ff` ──
+{
+  const E = '\x1b[';
+  const rgb = (hex) => `${E}38;2;${parseInt(hex.slice(1, 3), 16)};${parseInt(hex.slice(3, 5), 16)};${parseInt(hex.slice(5, 7), 16)}m`;
+  const R = `${E}0m`;
+  const B = `${E}1m`;
+  const artCols = Math.max(...data.art.map((l) => l.length));
+  const ansiArt = (line, colors) => {
+    let out = '';
+    let last = null;
+    for (let j = 0; j < artCols; j++) {
+      const ch = line[j] || ' ';
+      const c = (colors && colors[j]) || '.';
+      const hex = c === '.' || ch === ' ' ? null : palette[parseInt(c, 16)] || GREEN;
+      if (hex !== last) { out += hex ? rgb(hex) : R; last = hex; }
+      out += ch;
+    }
+    return out + R;
+  };
+  const ansiInfo = (e) => {
+    if (!e || e.blank) return '';
+    if (e.title) return B + rgb(GREEN) + e.title + R;
+    if (e.sep) return rgb(DIM) + '─'.repeat(22) + R;
+    return B + rgb(GREEN) + e.label + R + rgb(DIM) + ': ' + R + (e.link ? rgb(LINK) : rgb(TEXT)) + e.value + R;
+  };
+  // Leading blank art rows are dropped; the info column is centred against what is left, as fastfetch does.
+  const first = data.art.findIndex((l) => l.trim());
+  const art = data.art.slice(first);
+  const colors = data.artColors ? data.artColors.slice(first) : [];
+  const offset = Math.max(0, Math.floor((art.length - data.info.length) / 2));
+  const rows = [];
+  for (let i = 0; i < Math.max(art.length, data.info.length + offset); i++) {
+    rows.push((ansiArt(art[i] || '', colors[i]) + '   ' + ansiInfo(data.info[i - offset])).replace(/\s+$/, ''));
+  }
+  const page = `https://${data.login.toLowerCase()}.github.io/${data.login}/`;
+  const ff = [
+    '',
+    `${rgb(PROMPT)}${promptText}${R} ${rgb(GREEN)}${data.fetchCommand}${R}`,
+    '',
+    ...rows,
+    '',
+    `${rgb(DIM)}the one you can type in: ${R}${rgb(LINK)}${page}${R}`,
+    '',
+  ].join('\n');
+  writeFileSync(join(root, 'ff'), ff);
+  console.log(`ff written (${(Buffer.byteLength(ff) / 1024).toFixed(1)} KB of ANSI)`);
+}
+
 // ── GitHub repos snapshot ──
 async function fetchRepos() {
   let token = process.env.GITHUB_TOKEN;
@@ -271,6 +338,7 @@ const artJs = '    const ART = ' + indentJson({
   palette: data.artPalette || [GREEN],
   rows: data.art,
   colors: data.artColors || data.art.map((l) => '0'.repeat(l.length)),
+  ...(data.artHeart ? { heart: data.artHeart } : {}),
 }, '    ') + ';';
 const infoJs = '    const info = [\n' + data.info.map((e) => {
   if (e.title) return `      { label: ${q(e.title)}, value: '', bold: true },`;
@@ -345,9 +413,18 @@ function findChrome() {
   return chrome ? { bin: chrome, shell: false } : null;
 }
 function renderOg() {
-  const svgPath = join(root, 'terminal.svg');
   const out = join(root, 'og.png');
   const tmp = mkdtempSync(join(tmpdir(), 'gh-jaider-og-'));
+  // The preview is a still: a copy of the SVG with every animation pinned to one frame (the command
+  // typed, cursor after it), so the picture does not depend on when headless Chrome takes the shot.
+  const svgPath = join(tmp, 'terminal.svg');
+  const still = `
+    .type-cover, .type-cursor { animation: none !important; transform: translateX(${cmdW}px); }
+    .type-cursor { animation: none !important; }
+    .cursor-gate, .heart, .blink { animation: none !important; }
+    .out1, .out2 { animation: none !important; opacity: 0; }
+  `;
+  writeFileSync(svgPath, svg.replace('</style>', still + '</style>'));
   try {
     const chrome = findChrome();
     if (chrome) {
